@@ -154,7 +154,7 @@ class Menu extends Component {
         <div  className="textarea-container">
                 <textarea ref="comment" rows="4" cols="25">
                 </textarea>
-            </div>
+            </div> 
 
             <button onClick={this.handleSubmit.bind(this)}>Done</button>   
         </div>    

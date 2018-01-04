@@ -32,33 +32,36 @@
 
   #pac-input, .showAllButton {
     position: absolute;
-    top: 10px;
+    top: 50px;
     left: 25%;
     z-index: 5;
-    background-color: #fff;
+    background-color: rgba(182, 192, 201, 0.869);
     padding: 5px;
     border: 1px solid #999;
     text-align: center;
     font-family: 'Roboto','sans-serif';
     line-height: 30px;
     padding-left: 10px;
-    width:40%;
+    border-radius: 10px;
+
+    width:25%;
   
   }
 
   .showAllButton {
     position: absolute;
-    top: 10px;
-    left: 75%;
+    top: 100px;
+    left: 35%;
     z-index: 5;
-    background-color: #fff;
+    background-color: rgb(233, 229, 12);
     padding: 5px;
     border: 1px solid #999;
     text-align: center;
     font-family: 'Roboto','sans-serif';
     line-height: 30px;
     padding-left: 10px;
-    width:12%;
+    border-radius: 13%;
+    width:5%;
   
   }
 

@@ -465,7 +465,7 @@ class Main extends Component {
 
     }.bind(this))
   }
-
+ 
   render() {
 
     const inputProps = {

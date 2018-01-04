@@ -47,9 +47,9 @@ class App extends Component {
 
 
         <Main ref={instance => { this.mainChild = instance; }}  resetSignal = {this.resetSignal.bind(this)} signal={this.state.signal} stationSelection={this.handleStationSelection}/>
-        <Menu loadFunc={() => {return this.mainChild.loadAllSubwayStations();}} showAllStations={this.handleShowAllButtonSelection} selectedStation={this.state.selectedStation}/>
+        <Menu showAllStations={this.handleShowAllButtonSelection} selectedStation={this.state.selectedStation}/>
       </div>
-    );
+    ); 
   }
 }
 
