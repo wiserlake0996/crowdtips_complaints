@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Main.css';
+import './MainContent.css';
 import sleep from 'await-sleep'
 
 
