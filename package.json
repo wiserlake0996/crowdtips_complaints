@@ -8,6 +8,8 @@
   "dependencies": {
     "await-sleep": "0.0.1",
     "firebase": "^4.8.1",
+    "full-text-search": "0.0.16",
+    "full-text-search-light": "0.0.17",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },

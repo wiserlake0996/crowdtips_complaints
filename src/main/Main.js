@@ -8,254 +8,307 @@ class Main extends Component {
 
     constructor(props){
         super(props);
-              this.state = { map: null }
+              this.state = { map: null, isHidden: true }
 
               this.stationMarkers=[]
 
         this.addTransitMarkers = this.addTransitMarkers.bind(this)
+        this.onKeyPress.bind(this)
 
         this.mapStyle = [
-            {
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#1d2c4d"
-                }
-              ]
-            },
-            {
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#8ec3b9"
-                }
-              ]
-            },
-            {
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#1a3646"
-                }
-              ]
-            },
-            {
-              "featureType": "administrative.country",
-              "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "color": "#4b6878"
-                }
-              ]
-            },
-            {
-              "featureType": "administrative.land_parcel",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#64779e"
-                }
-              ]
-            },
-            {
-              "featureType": "administrative.province",
-              "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "color": "#4b6878"
-                }
-              ]
-            },
-            {
-              "featureType": "landscape.man_made",
-              "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "color": "#334e87"
-                }
-              ]
-            },
-            {
-              "featureType": "landscape.natural",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#023e58"
-                }
-              ]
-            },
-            {
-              "featureType": "poi",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#283d6a"
-                }
-              ]
-            },
-            {
-              "featureType": "poi",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#6f9ba5"
-                }
-              ]
-            },
-            {
-              "featureType": "poi",
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#1d2c4d"
-                }
-              ]
-            },
-            {
-              "featureType": "poi.park",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#023e58"
-                }
-              ]
-            },
-            {
-              "featureType": "poi.park",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#3C7680"
-                }
-              ]
-            },
-            {
-              "featureType": "road",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#304a7d"
-                }
-              ]
-            },
-            {
-              "featureType": "road",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#98a5be"
-                }
-              ]
-            },
-            {
-              "featureType": "road",
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#1d2c4d"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#2c6675"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "color": "#255763"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#b0d5ce"
-                }
-              ]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#023e58"
-                }
-              ]
-            },
-            {
-              "featureType": "transit",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#98a5be"
-                }
-              ]
-            },
-            {
-              "featureType": "transit",
-              "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#1d2c4d"
-                }
-              ]
-            },
-            {
-              "featureType": "transit.line",
-              "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#283d6a"
-                }
-              ]
-            },
-            {
-              "featureType": "transit.station",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#3a4762"
-                }
-              ]
-            },
-            {
-              "featureType": "water",
-              "elementType": "geometry",
-              "stylers": [
-                {
-                  "color": "#0e1626"
-                }
-              ]
-            },
-            {
-              "featureType": "water",
-              "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#4e6d70"
-                }
-              ]
-            }
-          ]
+          {
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#212121"
+              }
+            ]
+          },
+          {
+            "elementType": "labels",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.icon",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#212121"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.country",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#9e9e9e"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.land_parcel",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.locality",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#bdbdbd"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.neighborhood",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "poi",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#181818"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#616161"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#1b1b1b"
+              }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#2c2c2c"
+              }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#8a8a8a"
+              }
+            ]
+          },
+          {
+            "featureType": "road.arterial",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#373737"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#3c3c3c"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "labels",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#4e4e4e"
+              }
+            ]
+          },
+          {
+            "featureType": "road.local",
+            "stylers": [
+              {
+                "visibility": "off"
+              }
+            ]
+          },
+          {
+            "featureType": "road.local",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#616161"
+              }
+            ]
+          },
+          {
+            "featureType": "transit",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#757575"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#000000"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#3d3d3d"
+              }
+            ]
+          }
+        ]
+
+        this.querySearch = null;
+        this.subwayData = null;
+        this.readTransitData = this.readTransitData.bind(this)
+
+        this.createSearchableDB = this.createSearchableDB.bind(this)
+        this.clearMapContents = this.clearMapContents.bind(this)
+
+        this.querySearchableDB = this.querySearchableDB.bind(this)
+        this.MapApi = null
+
+        this.loadAllSubwayStops = this.loadAllSubwayStops.bind(this)
+
+        this.toggleHidden = this.toggleHidden.bind(this)
+
+        this.isHidden = true
+
     }
 
     componentDidMount(){
+      this.startupProcess()
+      document.getElementById("showall").hidden = true;
+
+    }
+
+    toggleHidden () {
+ 
+      this.isHidden = !this.isHidden
+    }
+    
+
+    async startupProcess(){
+
+      var promise = new Promise(function(resolve, reject) {
+        var data = this.readTransitData()
+        resolve(data)
+
+      }.bind(this));
+      
+      promise.then(function(val) {
+        console.log("here:",val); // 1
+
+        this.createSearchableDB(val)
+        
+      }.bind(this)).then(function(val) {
+
         this.markerOnMap()
+
+      }.bind(this))
+    }
+
+
+    loadAllSubwayStops(){
+      document.getElementById("showall").hidden = true;
+      this.refs.pacinput.value = ""
+
+      this.props.resetSignal()
+      this.clearMapContents()
+      var data = require('../data/subway-stations.json')
+
+      //console.log(this.MapApi)
+      this.addTransitMarkers(data['features'], this.GMapApi, this.map)
     }
 
     readTransitData(){
         var data = require('../data/subway-stations.json')
-
+        return data
     }
 
 
@@ -315,6 +368,7 @@ class Main extends Component {
           infowindow.setContent(content);
           console.log(content)
           infowindow.open(map, marker);
+
           this.props.stationSelection(selection)
         }.bind(this)
       }.bind(this))(marker, i));
@@ -353,7 +407,77 @@ class Main extends Component {
 
 
     }
+
+    onKeyPress = (e) => {
+      if(e.key === 'Enter'){
+          //do something
+          //alert(e.target.value)
+          this.clearMapContents()
+
+          //clear map
+
+          //search json
+          var q = e.target.value
+          this.querySearchableDB(q)
+          
+
+          //load new search to map
+      }
+  }
+
+  clearMapContents(){
+          // Sets the map on all markers in the array.
+          var markers = this.stationMarkers
+          var map = this.state.map
+    for (var i = 0; i < this.stationMarkers.length; i++) {
+      markers[i]['marker'].setMap(null);
+    }
+
+    this.stationMarkers = []
+  }
+
+  createSearchableDB(data){
+    var  fulltextsearchlight = require('full-text-search-light');
+    var search = new fulltextsearchlight();
+    
+    console.log("Adding search items..\n")
+    for (var i=0; i < data['features'].length; i++){
+        search.add(data['features'][i])
+        //console.log(data['features'][i])
+    }
+    
+    console.log("Added Search items:",data['features'].length, "\n")
+
+    this.querySearch = search;
+    console.log(this.querySearch)
+  }
+
+  querySearchableDB(query){
+    var promise = new Promise(function(resolve, reject){
+      var results = this.querySearch.search(query);
+      resolve(results)
+    }.bind(this))
+
+    promise.then(function(data){
+      this.addTransitMarkers(data, this.GMapApi, this.map)
+      document.getElementById("showall").hidden = false;
+
+
+    }.bind(this))
+  }
+
   render() {
+
+    const inputProps = {
+      placeholder: 'Search for a station...',
+      onChange: this.onChange,
+      onKeyPress: this.onKeyPress
+  }
+
+  if(this.props.signal == true){
+    this.loadAllSubwayStops()
+    
+  }
     return (
         <div id="main">
             {/* <div className="header">
@@ -362,6 +486,10 @@ class Main extends Component {
             </div> */}
 
             <div className="content">
+            <div className="boxAndButton">
+              <input ref = "pacinput" id="pac-input" className="controls" type="text" placeholder="Search Box" {...inputProps}/>
+              <button className="showAllButton"id="showall"onClick={this.loadAllSubwayStops}>Show All</button>  
+            </div>
                 <div id="map" >
                             
                 </div>

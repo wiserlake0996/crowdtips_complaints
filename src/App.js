@@ -15,10 +15,12 @@ class App extends Component {
       selectedStation:{
         name:"No Station Selected",
         line: "No Station Selected"
-      }
+      },
+      signal:false
     }
 
     this.handleStationSelection = this.handleStationSelection.bind(this)
+    this.handleShowAllButtonSelection = this.handleShowAllButtonSelection.bind(this)
   }
 
   handleStationSelection(selected){
@@ -26,13 +28,26 @@ class App extends Component {
       selectedStation:selected
     })
   }
+
+  handleShowAllButtonSelection(){
+    this.setState({
+      signal:true
+    })
+  }
+
+  resetSignal(){
+    this.setState({
+      signal:false
+    })
+  }
+
   render() {
     return (
       <div className="App">
 
 
-        <Main stationSelection={this.handleStationSelection}/>
-        <Menu selectedStation={this.state.selectedStation}/>
+        <Main ref={instance => { this.mainChild = instance; }}  resetSignal = {this.resetSignal.bind(this)} signal={this.state.signal} stationSelection={this.handleStationSelection}/>
+        <Menu loadFunc={() => {return this.mainChild.loadAllSubwayStations();}} showAllStations={this.handleShowAllButtonSelection} selectedStation={this.state.selectedStation}/>
       </div>
     );
   }

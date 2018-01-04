@@ -10,6 +10,10 @@ class Menu extends Component {
         this.initFirebase = this.initFirebase.bind(this)
         this.writeData = this.writeData.bind(this)
         this.ref = null
+
+        this.state = {
+            showAllButton:false
+        }
     }
 
     componentDidMount(){
@@ -72,6 +76,12 @@ class Menu extends Component {
 
             this.writeData(final)
    
+    }
+
+    showAll(){
+       this.props.loadFunc
+
+
     }
 
     writeData(data){
