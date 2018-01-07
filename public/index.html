@@ -36,5 +36,29 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script>
+      // var map;
+      // function initMap() {
+      // map = new google.maps.Map(document.getElementById('map'), {
+      //     center: {lat: 40.776966, lng: -73.963247},
+      //     zoom: 13
+      // });
+      // }
+      var map;
+      window.another = window.another || {}
+        function initMap(){
+          console.log("map will be init here")
+          map = google.maps
+          window.another = google.maps;
+
+        //   var map = new google.maps.Map(document.getElementById('mapbody'), {
+        //   center: {lat: -34.397, lng: 150.644},
+        //   zoom: 8
+        // });
+        }            
+      </script>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPO_U37SQRLRKXnfhaM6YncXbGJBKge-c&callback=initMap"
+          async defer></script>
   </body>
 </html>

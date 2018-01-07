@@ -170,12 +170,14 @@ input:focus {
   outline: none;
 }
 
+
+
 #mapbody {
   position: fixed;
   left: 0;
   top:0;
-  width: 75%;
-  Height: 100%; 
+  width: 1045px;/*75%;*/
+  Height: 1200px; 
   background-color: rgba(20,20,20,1);
 }
 
