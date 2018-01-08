@@ -43,12 +43,14 @@ class SelectStation extends Component {
         this.setState({selectedItems: updatedList});
       }
 
-    saveAndContinue(e, data) {
+    saveAndContinue(e, data, stationData) {
         e.preventDefault()
         console.log(data)
         var out ={
             station_name: data
         }
+
+        this.props.updateSelectedStation(stationData)
         this.props.saveValues(out)
         this.props.nextStep()
     }
@@ -89,13 +91,13 @@ class SelectStation extends Component {
             width : (this.props.currStep / 4 * 100) + '%'
           }
         return (
-            <div id="rightsidebar">
+            <div id="rightsidebaro">
             
                 <div id="header"><h1>I hate the MTA!</h1></div>
                 <div id="valueproposition"><h3>Do you agree? if yes, drop your complains here  and we will send it to the MTA on behalf of you!</h3></div>
                 <div id="train"><h1>Select a train station</h1></div>  
                 <span className="progress-step">Step {this.props.currStep}</span>
-        <progress className="progress" style={style}></progress>
+                <progress className="progress" style={style}></progress>
                 <div id="trainlines">
                     <div className="filter-list">
                     <input type="text" placeholder="Search" onChange={this.filterList}/>
@@ -114,7 +116,7 @@ class List extends Component {
             <ul>
             {
               this.props.items.map(function(item) {
-                return <li onClick={(e) => this.props.saveData(e, item.properties.name)} key={item.properties.name}>{item.properties.name}</li>
+                return <li onClick={(e) => this.props.saveData(e, item.properties.name, item)} key={item.properties.name}>{item.properties.name}</li>
               }.bind(this))
              }
             </ul>

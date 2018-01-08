@@ -7,6 +7,7 @@ import SelectComplaint from './select_complaint/SelectComplaint'
 import ComplaintDetails from './complaint_details/ComplaintDetails'
 import SelectLine from './select_line/SelectLine'
 import sleep from 'await-sleep'
+import ReactCSSTransitionReplace from 'react-css-transition-replace';
 
 var firebase = require('firebase')
 
@@ -26,7 +27,9 @@ class App extends Component {
     this.state = {
       step:1,
       currentComplaintType:null,
-      selectedLine:null, GoogleMapsApi:null
+      selectedLine:null, GoogleMapsApi:null,
+      stationsGroupedByColour: {}
+      
     }
 
     this.nextStep = this.nextStep.bind(this)
@@ -42,7 +45,10 @@ class App extends Component {
     this.loadAndGroupStationsByColour = this.loadAndGroupStationsByColour.bind(this)
     this.loadStationToMapByColor = this.loadStationToMapByColor.bind(this)
     this.clearMapContents = this.clearMapContents.bind(this)
-
+    this.updateMapWithLine = this.updateMapWithLine.bind(this)
+    this.updateSelectedStation = this.updateSelectedStation.bind(this)
+    this.loadSpecificStationToMap = this.loadSpecificStationToMap.bind(this)
+    this.populateMapWithAllStations = this.populateMapWithAllStations.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -74,14 +80,20 @@ class App extends Component {
 
     }
     this.GoogleApi = MapApi
-    console.log("Goolge map api", this.GoogleApi)
     //init new map
     this.map = new MapApi.Map(document.getElementById("mapbody"), mapOptions);
 
-    console.log(this.map)
     this.setState({map:this.map, GoogleMapsApi: MapApi})
 
     this.loadAndGroupStationsByColour()
+
+    this.populateMapWithAllStations()
+
+  }
+
+  populateMapWithAllStations(){
+
+    this.clearMapContents()
 
     this.loadStationToMapByColor("red")
     this.loadStationToMapByColor("brown")
@@ -94,12 +106,6 @@ class App extends Component {
     this.loadStationToMapByColor("green")
 
     this.loadStationToMapByColor("purple")
-
-
-
-    //loadAndGroupStationsByColour("red")
-    //var data = require('../data/subway-stations.json')
-    //this.addTransitMarkers(data["features"], MapApi, this.map)
   }
 
 
@@ -140,6 +146,9 @@ class App extends Component {
           stationColors["brown"].push(stationData[i])
         }else if(lineSplit[0] == "G"){
           stationColors["light_green"].push(stationData[i])
+        }else{
+          stationColors["another_blue"].push(stationData[i])
+
         }
       }else{
         if(lineSplit[0] == 1 || lineSplit[0] == 2 || lineSplit[0] == 3){
@@ -153,6 +162,10 @@ class App extends Component {
     }
 
     this.stationsGroupedByColour = stationColors;
+    this.setState({
+      stationsGroupedByColour:stationColors
+      
+    })
 
     
   }
@@ -196,6 +209,10 @@ class App extends Component {
     if(stationColor == "dark_gray"){
       imageUrl = imageUrl+"darkgray.png"
     }
+
+    if(stationColor == "another_blue"){
+      imageUrl = imageUrl+"anotherblue.png"
+    }
     var image = {
       url: imageUrl,
       // This marker is 20 pixels wide by 32 pixels high.
@@ -213,7 +230,8 @@ class App extends Component {
 
     var infowindow = new MapApi.InfoWindow();
     var marker, i;
-    var data = this.stationsGroupedByColour[stationColor]
+
+    var data = this.state.stationsGroupedByColour[stationColor]
 
     for (i = 0; i < data.length; i++) {
       var station = data[i]
@@ -230,8 +248,8 @@ class App extends Component {
         marker: marker
       })
 
-      console.log(station["properties"]["name"] ,station["geometry"]["coordinates"][1] )
-    }
+      console.log("i value:", i)
+    
 
     
     MapApi.event.addListener(marker, 'click', (function(marker, i) {
@@ -244,14 +262,18 @@ class App extends Component {
               line:this.stationMarkers[i]["line"]
           }
         infowindow.setContent(content);
-        console.log(content)
         infowindow.open(map, marker);
-
-        //this.props.stationSelection(selection)
       }.bind(this)
     }.bind(this))(marker, i));
 
     this.setState({stationMarkers:markers})
+  }
+  }
+
+  updateMapWithLine(selectedColor){
+    this.clearMapContents()
+    this.loadAndGroupStationsByColour()
+    this.loadStationToMapByColor(selectedColor)
   }
 
   clearMapContents(){
@@ -262,6 +284,10 @@ class App extends Component {
       markers[i]['marker'].setMap(null);
     }
     this.stationMarkers = []
+
+    var myLatlng = {lat:40.748817, lng:-73.985428};
+
+    this.map.panTo(myLatlng)
   }
 
 
@@ -296,11 +322,8 @@ class App extends Component {
 
   saveValues(fields) {
     return function() {
-      // Remember, `fieldValues` is set at the top of this file, we are simply appending
-      // to and overriding keys in `fieldValues` with the `fields` with Object.assign
-      // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+
       fieldValues = Object.assign({}, fieldValues, fields)
-      console.log(fieldValues)
     }()
   }
   
@@ -317,10 +340,114 @@ class App extends Component {
     })
   }
 
-  updateLineSelection(line){
+  updateLineSelection(line, color){
     this.setState({
       selectedLine: line
     })
+
+    this.updateMapWithLine(color)
+  }
+
+
+
+  updateSelectedStation(stationData){
+    var line = stationData["properties"]["line"]
+    var lineSplit = line.split("-")
+
+    if(/^[a-zA-Z]+$/.test(lineSplit[0])){
+      if(lineSplit[0] == "A" || lineSplit[0] == "C" || lineSplit[0] == "E"){
+        this.loadSpecificStationToMap(stationData, "blue")
+      }else if(lineSplit[0] == "B" || lineSplit[0] == "D" || lineSplit[0] == "F" || lineSplit[0] == "M"){
+        this.loadSpecificStationToMap(stationData, "orange")
+      }else if(lineSplit[0] == "S"){
+        this.loadSpecificStationToMap(stationData, "darkgray")
+      }else if(lineSplit[0] == "N" || lineSplit[0] == "Q" || lineSplit[0] == "R" || lineSplit[0] == "W"){
+        this.loadSpecificStationToMap(stationData, "yellow")
+      }else if(lineSplit[0] == "L" ){
+        this.loadSpecificStationToMap(stationData, "lightgray")
+      }else if(lineSplit[0] == "J" || lineSplit[0] == "Z"){
+        this.loadSpecificStationToMap(stationData, "brown")
+      }else if(lineSplit[0] == "G"){
+        this.loadSpecificStationToMap(stationData, "lightgreen")
+      }else{
+        this.loadSpecificStationToMap(stationData, "anotherblue")
+        
+      }
+    }else{
+      if(lineSplit[0] == 1 || lineSplit[0] == 2 || lineSplit[0] == 3){
+        this.loadSpecificStationToMap(stationData, "red")
+      }else if(lineSplit[0] == 4 || lineSplit[0] == 5 || lineSplit[0] == 6 ){
+        this.loadSpecificStationToMap(stationData, "green")
+      }else if(lineSplit[0] == 7){
+        this.loadSpecificStationToMap(stationData, "purple")
+      }
+    }
+  }
+
+  loadSpecificStationToMap(stationData, lineColor){
+
+    this.clearMapContents();
+
+    var markers = []
+    var MapApi = this.GoogleApi
+   
+    var map = this.map
+    var imageUrl = 'http://localhost:3000/station_icons/'+lineColor+".png"
+
+    var image = {
+      url: imageUrl,
+      // This marker is 20 pixels wide by 32 pixels high.
+      size: new MapApi.Size(20, 32),
+      // The origin for this image is (0, 0).
+      origin: new MapApi.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new MapApi.Point(0, 32)
+    };
+
+    var shape = {
+      coords: [1, 1, 1, 20, 18, 20, 18, 1],
+      type: 'poly'
+    };
+
+    var infowindow = new MapApi.InfoWindow();
+    var marker, i;
+
+      var station = stationData
+      var name = station["properties"]["name"]  
+      marker = new MapApi.Marker({
+        position: new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0]),
+        map: map,
+        icon:image
+      });
+
+      this.stationMarkers.push({
+        name:name,
+        line:station["properties"]["line"],
+        marker: marker
+      })
+    
+    MapApi.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+          var content = "<div>"+
+                      "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
+                      "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
+          var selection ={
+              name:this.stationMarkers[i]["name"],
+              line:this.stationMarkers[i]["line"]
+          }
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+
+        //this.props.stationSelection(selection)
+      }.bind(this)
+    }.bind(this))(marker, 0));
+
+    var myLatlng = new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0])
+    this.map.setZoom(13);
+
+    this.map.panTo(myLatlng)
+    this.setState({stationMarkers:markers})
+
   }
 
   submitData(){
@@ -330,9 +457,6 @@ class App extends Component {
       timestamp: timeInMs
     }
     fieldValues = Object.assign({}, fieldValues, time) 
-
-    console.log(fieldValues)
-
     this.writeData(fieldValues)
 
     // WRITE TO FIREBASE
@@ -357,40 +481,46 @@ class App extends Component {
       selectedLine:null
     })
 
-    alert("Thank you for your submission!")
-
+    this.populateMapWithAllStations()
 
   }
 
   showStep(){
     switch(this.state.step){
       case 1:
-        return (<SelectLine updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+        return (
+ 
+        
+        <SelectLine key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/>  
+
+
         )     
 
       case 2:
-        return (<SelectStation selectedLine = {this.state.selectedLine} currStep ={this.state.step} fieldValues={fieldValues}
+        return ( 
+
+        <SelectStation updateSelectedStation = {this.updateSelectedStation} key="step2" selectedLine = {this.state.selectedLine} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/>
-     
+  
         )         
 
       case 3:
-        return (<SelectComplaint setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        return (<SelectComplaint key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/> 
         )     
       case 4:
-        return (<ComplaintDetails complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        return (<ComplaintDetails key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues} submitData={this.submitData}
         /> 
         )     
 
       case 5:
-        return (<SelectLine fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
+        return (<SelectLine key="step5" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
        
         )      
     }
@@ -404,8 +534,18 @@ class App extends Component {
     return(
       <div id="page-container">
         
+        <div id="rightsidebar">
+        <ReactCSSTransitionReplace
+          transitionName="cross-fade"
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={50}
+        > 
 
         {this.showStep()}
+
+        </ReactCSSTransitionReplace>
+
+        </div>
 
         <div id="mapbody">
 

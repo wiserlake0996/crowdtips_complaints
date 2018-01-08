@@ -27,7 +27,7 @@ class SelectComplaint extends Component {
       width : (this.props.currStep / 4 * 100) + '%'
     }
     return (
-      <div id="rightsidebar">
+      <div id="rightsidebaro">
         
         
         <div id="header"><h1>I hate the MTA!</h1></div>
