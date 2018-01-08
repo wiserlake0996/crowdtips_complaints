@@ -53,8 +53,8 @@ saveAndContinue(e, data, color) {
         <div id="header"><h1>I hate the MTA!</h1></div>
         <div id="valueproposition"><h3>Do you agree? if yes, drop your complains here  and we will send it to the MTA on behalf of you!</h3></div>
         <div id="train"><h1>Select a train station</h1></div>  
-        <span className="progress-step">Step {this.props.currStep}</span>
-        <progress className="progress" style={style}></progress>
+        {/* <span className="progress-step">Step {this.props.currStep}</span>
+        <progress className="progress" style={style}></progress> */}
         <div id="trainlines">
             <div defaultValue = "1" onClick={(e) => this.saveAndContinue(e, "1", "red")} ref = "1" className="lines red"><h2  defaultValue = "1">1</h2></div>
             <div onClick={(e) => this.saveAndContinue(e, "2", "red")} ref = "2"  className="lines red"><h2>2</h2></div>

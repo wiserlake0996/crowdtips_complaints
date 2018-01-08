@@ -162,8 +162,8 @@ class ComplaintDetails extends Component {
         <div id="header"><h1>I hate the MTA!</h1></div>
         <div id="valueproposition"><h3>Do you agree? if yes, drop your complains here  and we will send it to the MTA on behalf of you!</h3></div>
         <div id="complain"><h1>Delays made me</h1></div> 
-        <span className="progress-step">Step {this.props.currStep}</span>
-        <progress className="progress" style={style}></progress>
+        {/* <span className="progress-step">Step {this.props.currStep}</span>
+        <progress className="progress" style={style}></progress> */}
 
         <ComplaintDetailsList complaintData = {complaint_items[this.props.complaintType]} complaintType={this.props.complaintType} checkItem={this.complaintCheckEvent} items={station_items}/>
 

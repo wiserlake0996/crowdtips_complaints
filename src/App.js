@@ -8,6 +8,7 @@ import ComplaintDetails from './complaint_details/ComplaintDetails'
 import SelectLine from './select_line/SelectLine'
 import sleep from 'await-sleep'
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
+import OtherComplaintBox from './select_complaint/OtherComplaint';
 
 var firebase = require('firebase')
 
@@ -34,6 +35,7 @@ class App extends Component {
 
     this.nextStep = this.nextStep.bind(this)
     this.previousStep = this.previousStep.bind(this)
+    this.openStep = this.openStep.bind(this)
     this.saveValues = this.saveValues.bind(this)
     this.showStep = this.showStep.bind(this)
     this.setComplaintType = this.setComplaintType.bind(this)
@@ -332,6 +334,12 @@ class App extends Component {
       step : this.state.step + 1
     })
   }
+
+  openStep(stepNumber){
+    this.setState({
+      step: stepNumber
+    })
+  }
   
   // Same as nextStep, but decrementing
   previousStep() {
@@ -508,7 +516,7 @@ class App extends Component {
         )         
 
       case 3:
-        return (<SelectComplaint key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        return (<SelectComplaint openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/> 
         )     
@@ -522,7 +530,12 @@ class App extends Component {
       case 5:
         return (<SelectLine key="step5" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
        
-        )      
+        )    
+        
+        case 6:
+        return (<OtherComplaintBox submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
+       
+        )         
     }
   }
 
@@ -535,15 +548,15 @@ class App extends Component {
       <div id="page-container">
         
         <div id="rightsidebar">
-        <ReactCSSTransitionReplace
-          transitionName="cross-fade"
-          transitionEnterTimeout={1000}
-          transitionLeaveTimeout={50}
-        > 
+          <ReactCSSTransitionReplace
+            transitionName="cross-fade"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={10}
+          > 
 
-        {this.showStep()}
+            {this.showStep()}
 
-        </ReactCSSTransitionReplace>
+          </ReactCSSTransitionReplace>
 
         </div>
 
