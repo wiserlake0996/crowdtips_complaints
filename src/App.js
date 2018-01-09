@@ -619,14 +619,14 @@ class App extends Component {
         <div id="contactForm">
 
           <h1 className="contact-form-header">Keep in touch!</h1>
-          <small className="contact-form-description">I'll get back to you as quickly as possible</small>
+          <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
 
           <form action="#">
             <input ref="userName" id="contact-input" placeholder="Name" type="text" required />
             <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
 
             <input onClick={this.writeUserData}className="formBtn" type="submit" />
-            <input onClick={this.closeContactForm} className="formBtn" type="reset" />
+            {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> */}
           </form>
           </div>
 
