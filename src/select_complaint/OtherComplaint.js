@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-
+import './complaint.css'
 class OtherComplaintBox extends Component {
 
   constructor(props){
@@ -42,11 +42,14 @@ class OtherComplaintBox extends Component {
 
   render(){
       return(
-          <div>
-              <input type="text" ref="topic"/>
-              <textarea ref="text"></textarea>
-              <button onClick={this.saveComplaint}>done</button>
-              <button> cancel </button>
+          <div id="other-complaint-container">
+                <div id="header"><h1>I hate the MTA!</h1></div>
+                <div id="valueproposition"><h3>Do you agree? if yes, drop your complains here  and we will send it to the MTA on behalf of you!</h3></div>
+                <div id="complain"><h1>I want to complain about</h1></div> 
+                <input placeholder="enter topic"id="topic" type="text" ref="topic"/>
+                <textarea placeholder="complaint text here.."rows="10" id="complaint-text-area" ref="text"></textarea>
+                <button id="submit-button" onClick={this.saveComplaint}>done</button>
+                <button id="cancel-button"> cancel </button>
           </div>
       )
   }

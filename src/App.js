@@ -10,6 +10,8 @@ import sleep from 'await-sleep'
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import OtherComplaintBox from './select_complaint/OtherComplaint';
 
+var $ = require("jquery");
+
 var firebase = require('firebase')
 
 
@@ -51,6 +53,9 @@ class App extends Component {
     this.updateSelectedStation = this.updateSelectedStation.bind(this)
     this.loadSpecificStationToMap = this.loadSpecificStationToMap.bind(this)
     this.populateMapWithAllStations = this.populateMapWithAllStations.bind(this)
+    this.openContactForm = this.openContactForm.bind(this)
+    this.closeContactForm = this.closeContactForm.bind(this)
+    this.writeUserData = this.writeUserData.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -63,6 +68,8 @@ class App extends Component {
   componentDidMount(){
     this.initFirebase()
     this.loadMap()
+
+    console.log("jquery", $)
 
 
   }
@@ -310,11 +317,31 @@ class App extends Component {
 
   writeData(data){
     var newPostKey = firebase.database().ref().child('complaints').push().key;
+    this.complaintKey = newPostKey;
     var updates = {};
     updates['/complaints/' + newPostKey] = data;
     firebase.database().ref().update(updates);
     alert("Submission Received! Thank you")
   }
+
+
+  writeUserData(e){
+    e.preventDefault()
+    var data = {
+      name: this.refs.userName.value || "",
+      email: this.refs.userEmail.value || "",
+      complaint_key: this.complaintKey || "none"
+    }
+    var newPostKey = firebase.database().ref().child('subscriptions').push().key;
+    var updates = {};
+    updates['/subscriptions/' + newPostKey] = data;
+    firebase.database().ref().update(updates);
+    this.closeContactForm()
+    this.complaintKey = ""
+
+    alert("Submission Received! Thank you")
+  }
+
 
   setComplaintType(complaint){
     this.setState({
@@ -459,6 +486,8 @@ class App extends Component {
   }
 
   submitData(){
+
+    this.openContactForm()
     var timeInMs = Date.now();
 
     var time={
@@ -488,6 +517,8 @@ class App extends Component {
       currentComplaintType:null,
       selectedLine:null
     })
+
+
 
     this.populateMapWithAllStations()
 
@@ -535,19 +566,74 @@ class App extends Component {
         case 6:
         return (<OtherComplaintBox submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
        
-        )         
+        )
+        
+        case 7:
+        return(
+          <div id="contactForm">
+
+          <h1>Keep in touch!</h1>
+          <small>I'll get back to you as quickly as possible</small>
+    
+          <form action="#">
+            <input id="contact-input" placeholder="Name" type="text" required />
+            <input id="contact-input" placeholder="Email" type="email" required />
+            <input id="contact-input" placeholder="Subject" type="text" required />
+            <textarea id="contact-textarea" placeholder="Comment"></textarea>
+            <input className="formBtn" type="submit" />
+            <input className="formBtn" type="reset" />
+          </form>
+          </div>
+        )
     }
   }
 
+  openContactForm(){
+
+    $("#contactForm").fadeToggle();
+    
+  }
+
+  closeContactForm(){
+    var container = $("#contactForm");
+    container.fadeOut();
+  }
+
   render() {
+
+    $(document).mouseup(function (e) {
+      var container = $("#contactForm");
+  
+      if (!container.is(e.target) // if the target of the click isn't the container...
+          && container.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+          container.fadeOut();
+      }
+    });
 
     var style = {
       width : (this.state.step / 4 * 100) + '%'
     }
     return(
       <div id="page-container">
+        <div id="contactForm">
+
+          <h1 className="contact-form-header">Keep in touch!</h1>
+          <small className="contact-form-description">I'll get back to you as quickly as possible</small>
+
+          <form action="#">
+            <input ref="userName" id="contact-input" placeholder="Name" type="text" required />
+            <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
+
+            <input onClick={this.writeUserData}className="formBtn" type="submit" />
+            <input onClick={this.closeContactForm} className="formBtn" type="reset" />
+          </form>
+          </div>
+
         
         <div id="rightsidebar">
+
+
           <ReactCSSTransitionReplace
             transitionName="cross-fade"
             transitionEnterTimeout={500}
@@ -562,7 +648,7 @@ class App extends Component {
 
         <div id="mapbody">
 
-        </div> 
+        </div>
 
       </div>
     )

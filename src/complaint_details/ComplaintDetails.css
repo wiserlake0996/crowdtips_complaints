@@ -46,4 +46,47 @@
     background-color:rgba(153, 17, 17, 0.658);
     color:#fff;
 }
+#other-text-area{
 
+    width: 90%;
+    background: transparent; 
+    background-color: rgba(112, 104, 104, 0.459);
+    border: none; 
+    border-bottom: solid 5px white; 
+    color: red; 
+    font-size: 20px; 
+    margin: 20px auto auto 10px;
+}
+
+#submit-details-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px
+}
+#cancel-details-button {
+    background-color: rgb(175, 76, 76); /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#complaints-options-list{
+    padding-bottom:40px; 
+}
+
+.ortext{
+    margin-top: 30px;
+    display: block;
+    padding-top: 140px;
+    text-align: center;
+}

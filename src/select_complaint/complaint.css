@@ -1,0 +1,43 @@
+#other-complaint-container{
+    width: 100%;
+    height:100%;
+}
+
+#complaint-text-area, #topic{
+
+    width: 90%;
+    background: transparent; 
+    background-color: rgba(112, 104, 104, 0.459);
+    border: none; 
+    border-bottom: solid 5px white; 
+    color: red; 
+    font-size: 20px; 
+    margin: 20px auto auto 10px;
+}
+
+
+#topic{
+    width:85%
+}
+
+#submit-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px
+}
+#cancel-button {
+    background-color: rgb(175, 76, 76); /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}

@@ -23,7 +23,7 @@ var station_items=[
 var complaint_items={delays:[
     {
       id:1,
-      text:"miss my appointment"
+      text:"Miss my appointment/meeting"
     },
     {
       id:2,
@@ -41,37 +41,37 @@ var complaint_items={delays:[
   tickets:[
     {
       id:1,
-      text:"ticket blaskd"
+      text:"Machines were broken"
     },
     {
       id:2,
-      text:"Spend money on taxi/uber"
+      text:"Not accepting cash payments"
     },
     {
       id:3,
-      text:"Late to work"
+      text:"Not accepting card payments"
     },
     {
       id:4,
-      text:"think about moving out of NYC!"
+      text:"No payment options available"
     }
   ],
   dirtyness:[
     {
       id:1,
-      text:"puke"
+      text:"Garbage bins were overflowing"
     },
     {
       id:2,
-      text:"Spend money on taxi/uber"
+      text:"Rodents on the platform"
     },
     {
       id:3,
-      text:"Late to work"
+      text:"Bad smell"
     },
     {
       id:4,
-      text:"think about moving out of NYC!"
+      text:"Other riders loitering"
     }
   ],
   staff:[
@@ -81,33 +81,33 @@ var complaint_items={delays:[
     },
     {
       id:2,
-      text:"Spend money on taxi/uber"
+      text:"Didnt want to answer my question"
     },
     {
       id:3,
-      text:"Late to work"
+      text:"Long response time"
     },
     {
       id:4,
-      text:"think about moving out of NYC!"
+      text:"Disinterested in helping"
     }
   ],
   security:[
     {
       id:1,
-      text:"popo "
+      text:"No patroling cops "
     },
     {
       id:2,
-      text:"Spend money on taxi/uber"
+      text:"Drunk people around"
     },
     {
       id:3,
-      text:"Late to work"
+      text:"People doing drugs and more"
     },
     {
       id:4,
-      text:"think about moving out of NYC!"
+      text:"Someone smoking"
     }
   ]
 }
@@ -132,7 +132,8 @@ class ComplaintDetails extends Component {
     var out ={
         complaints: {
           type:this.props.complaintType,
-          selected: selected
+          selected: selected,
+          other:this.refs.othertext.value || ""
         }
     }
     this.props.saveValues(out)
@@ -165,13 +166,21 @@ class ComplaintDetails extends Component {
         {/* <span className="progress-step">Step {this.props.currStep}</span>
         <progress className="progress" style={style}></progress> */}
 
-        <ComplaintDetailsList complaintData = {complaint_items[this.props.complaintType]} complaintType={this.props.complaintType} checkItem={this.complaintCheckEvent} items={station_items}/>
+        <ComplaintDetailsList id="complaints-options-list" complaintData = {complaint_items[this.props.complaintType]} complaintType={this.props.complaintType} checkItem={this.complaintCheckEvent} items={station_items}/>
+        
+        <div className="ortext">
+        <h4 > OR </h4>
+        </div>
+        <textarea ref="othertext" placeholder="other.."rows="7" id="other-text-area" ></textarea>
 
         <div> 
-          <button onClick={this.submitComplaint}>Submit</button>
+          <button id="submit-details-button"onClick={this.submitComplaint}>Submit</button>
+          <button id="cancel-details-button">Cancel</button>
           {/* <button>add more..</button> */}
         
         </div>
+
+
  
         <div id="footer">©Crowdtips 2018</div>
     </div>

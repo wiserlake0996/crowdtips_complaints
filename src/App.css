@@ -49,7 +49,7 @@ h1, h2, h3 {
   position: fixed;
   top: 0;
   right: 0;
-  height: 100%; 
+  height: 100vh; 
   width: 25%; 
   background-color: rgba(20,20,20,0.9);
   overflow-y: hidden;
@@ -157,6 +157,7 @@ input {
   height: 5%; 
   width: 90%;
   background: transparent; 
+  background-color: rgba(112, 104, 104, 0.459);
   border: none; 
   border-bottom: solid 5px white; 
   color: red; 
@@ -172,7 +173,11 @@ input:focus {
   outline: none;
 }
 
-
+#map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 
 #mapbody {
   position: fixed;
@@ -180,8 +185,8 @@ input:focus {
   top:0;
   /* width: 1045px;75%; */
   width:75%;
-  max-height: 1200px;  
-  height: 1000px; 
+  height: 100vh; 
+  max-height: 1500px;
   background-color: rgba(20,20,20,1);
 }
 
@@ -237,6 +242,53 @@ input:focus {
   transition: height .5s ease-in-out;
 }
 
-#page-container{
 
+
+/**** POP UP FORM ****/
+
+
+
+#contactForm { 
+  display: none;
+
+  border: 6px solid salmon; 
+  padding: 2em;
+  width: 400px;
+  text-align: center;
+  background: #fff;
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  z-index: 30;
+  
+}
+
+#contact-input, #contact-textarea { 
+  margin: .8em auto;
+  font-family: inherit; 
+  text-transform: inherit; 
+  font-size: inherit;
+  
+  display: block; 
+  width: 280px; 
+  padding: .4em;
+}
+#contace-textarea { height: 80px; resize: none; }
+
+.contact-form-header, .contact-form-description{
+  color: #222;
+}
+
+.formBtn { 
+  width: 140px;
+  display: inline-block;
+  
+  background: teal;
+  color: rgb(41, 37, 37);
+  font-weight: 100;
+  font-size: 1.2em;
+  border: none;
+  height: 30px;
 }
