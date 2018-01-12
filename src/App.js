@@ -31,7 +31,8 @@ class App extends Component {
       step:1,
       currentComplaintType:null,
       selectedLine:null, GoogleMapsApi:null,
-      stationsGroupedByColour: {}
+      stationsGroupedByColour: {},
+      baseColor:'green'
       
     }
 
@@ -56,6 +57,8 @@ class App extends Component {
     this.openContactForm = this.openContactForm.bind(this)
     this.closeContactForm = this.closeContactForm.bind(this)
     this.writeUserData = this.writeUserData.bind(this)
+    this.setBaseColor = this.setBaseColor.bind(this)
+    this.resetAll = this.resetAll.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -68,10 +71,10 @@ class App extends Component {
   componentDidMount(){
     this.initFirebase()
     this.loadMap()
+  }
 
-    console.log("jquery", $)
-
-
+  setBaseColor(color){
+    this.setState({baseColor:color})
   }
 
   async loadMap(){
@@ -116,8 +119,6 @@ class App extends Component {
 
     this.loadStationToMapByColor("purple")
   }
-
-
 
   loadAndGroupStationsByColour(){
     var stationColors = {
@@ -174,9 +175,7 @@ class App extends Component {
     this.setState({
       stationsGroupedByColour:stationColors
       
-    })
-
-    
+    })    
   }
 
   loadStationToMapByColor(stationColor){
@@ -257,26 +256,22 @@ class App extends Component {
         marker: marker
       })
 
-      console.log("i value:", i)
-    
+      MapApi.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+            var content = "<div>"+
+                        "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
+                        "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
+            var selection ={
+                name:this.stationMarkers[i]["name"],
+                line:this.stationMarkers[i]["line"]
+            }
+          infowindow.setContent(content);
+          infowindow.open(map, marker);
+        }.bind(this)
+      }.bind(this))(marker, i));
 
-    
-    MapApi.event.addListener(marker, 'click', (function(marker, i) {
-      return function() {
-          var content = "<div>"+
-                      "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
-                      "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
-          var selection ={
-              name:this.stationMarkers[i]["name"],
-              line:this.stationMarkers[i]["line"]
-          }
-        infowindow.setContent(content);
-        infowindow.open(map, marker);
-      }.bind(this)
-    }.bind(this))(marker, i));
-
-    this.setState({stationMarkers:markers})
-  }
+      this.setState({stationMarkers:markers})
+    }
   }
 
   updateMapWithLine(selectedColor){
@@ -338,10 +333,29 @@ class App extends Component {
     firebase.database().ref().update(updates);
     this.closeContactForm()
     this.complaintKey = ""
-
-    alert("Submission Received! Thank you")
+    this.resetAll()
+    
   }
 
+  resetAll(){
+
+    /// RESET FIELD VALUES
+    fieldValues = {
+      station_name     : null,
+      subway_line    : null,
+      complaints : [],
+      timestamp      : null,
+    }
+
+    //RESET STATES
+    this.setState({
+      //step:1,
+      currentComplaintType:null,
+      selectedLine:null
+    })
+    this.openStep(1)
+    this.populateMapWithAllStations()
+  }
 
   setComplaintType(complaint){
     this.setState({
@@ -376,13 +390,23 @@ class App extends Component {
   }
 
   updateLineSelection(line, color){
+    var col = color
+    if (color == "light_green"){
+      col = "aquamarine"
+    }
+    if (color == "light_gray"){
+      col = "lightgray"
+    }
+    if (color == "dark_gray"){
+      col = "darkgray"
+    }
     this.setState({
-      selectedLine: line
+      selectedLine: line,
+      baseColor:col
     })
 
     this.updateMapWithLine(color)
   }
-
 
 
   updateSelectedStation(stationData){
@@ -487,7 +511,7 @@ class App extends Component {
 
   submitData(){
 
-    this.openContactForm()
+    //this.openContactForm()
     var timeInMs = Date.now();
 
     var time={
@@ -498,29 +522,8 @@ class App extends Component {
 
     // WRITE TO FIREBASE
     this.setState({
-      step : 1
+      step : 6
     })
-
-    /// RESET FIELD VALUES
-
-    fieldValues = {
-      station_name     : null,
-      subway_line    : null,
-      complaints : [],
-      timestamp      : null,
-    }
-
-
-    //RESET STATES
-    this.setState({
-      //step:1,
-      currentComplaintType:null,
-      selectedLine:null
-    })
-
-
-
-    this.populateMapWithAllStations()
 
   }
 
@@ -530,7 +533,7 @@ class App extends Component {
         return (
  
         
-        <SelectLine key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+        <SelectLine setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/>  
 
@@ -540,49 +543,46 @@ class App extends Component {
       case 2:
         return ( 
 
-        <SelectStation updateSelectedStation = {this.updateSelectedStation} key="step2" selectedLine = {this.state.selectedLine} currStep ={this.state.step} fieldValues={fieldValues}
+        <SelectStation baseColor={this.state.baseColor} updateSelectedStation = {this.updateSelectedStation} key="step2" selectedLine = {this.state.selectedLine} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
-        saveValues={this.saveValues}/>
+        saveValues={this.saveValues} goBack={this.previousStep}/>
   
         )         
 
       case 3:
-        return (<SelectComplaint openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        return (<SelectComplaint goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/> 
         )     
       case 4:
-        return (<ComplaintDetails key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        return (<ComplaintDetails goBack={this.previousStep} baseColor={this.state.baseColor} key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues} submitData={this.submitData}
         /> 
         )     
-
-      case 5:
-        return (<SelectLine key="step5" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
-       
-        )    
         
-        case 6:
-        return (<OtherComplaintBox submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
+        case 5:
+        return (<OtherComplaintBox resetData = {this.resetAll} baseColor={this.state.baseColor} submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
        
         )
         
-        case 7:
+        case 6:
+
+          this.openContactForm()
         return(
           <div id="contactForm">
 
-          <h1>Keep in touch!</h1>
-          <small>I'll get back to you as quickly as possible</small>
-    
-          <form action="#">
-            <input id="contact-input" placeholder="Name" type="text" required />
-            <input id="contact-input" placeholder="Email" type="email" required />
-            <input id="contact-input" placeholder="Subject" type="text" required />
-            <textarea id="contact-textarea" placeholder="Comment"></textarea>
-            <input className="formBtn" type="submit" />
-            <input className="formBtn" type="reset" />
-          </form>
+            <h1 className="contact-form-header">Keep in touch!</h1>
+            <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
+
+            <form action="#">
+              <input ref="userName" id="contact-input" placeholder="Name" type="text" required />
+              <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
+
+              <button onClick={this.writeUserData}className="formBtn" >Submit </button>
+              <button onClick={this.resetAll} style={{backgroundColor:'red'}}id="formBtn">Cancel</button>
+              {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> */}
+            </form>
           </div>
         )
     }
@@ -601,22 +601,22 @@ class App extends Component {
 
   render() {
 
-    $(document).mouseup(function (e) {
-      var container = $("#contactForm");
+    // $(document).mouseup(function (e) {
+    //   var container = $("#contactForm");
   
-      if (!container.is(e.target) // if the target of the click isn't the container...
-          && container.has(e.target).length === 0) // ... nor a descendant of the container
-      {
-          container.fadeOut();
-      }
-    });
+    //   if (!container.is(e.target) // if the target of the click isn't the container...
+    //       && container.has(e.target).length === 0) // ... nor a descendant of the container
+    //   {
+    //       container.fadeOut();
+    //   }
+    // });
 
     var style = {
       width : (this.state.step / 4 * 100) + '%'
     }
     return(
       <div id="page-container">
-        <div id="contactForm">
+        {/* <div id="contactForm">
 
           <h1 className="contact-form-header">Keep in touch!</h1>
           <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
@@ -626,9 +626,9 @@ class App extends Component {
             <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
 
             <input onClick={this.writeUserData}className="formBtn" type="submit" />
-            {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> */}
+            {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> 
           </form>
-          </div>
+          </div> */}
 
         
         <div id="rightsidebar">

@@ -31,7 +31,7 @@ class OtherComplaintBox extends Component {
     alert("all done, thank you")
     this.props.submitData()
     
-    this.props.openStep(1)
+   // this.props.openStep(1)
 
 
   }

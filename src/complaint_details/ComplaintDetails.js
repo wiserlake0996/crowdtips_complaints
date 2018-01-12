@@ -156,6 +156,11 @@ class ComplaintDetails extends Component {
     var style = {
       width : (this.props.currStep / 4 * 100) + '%'
     }
+
+    var bgColor = {
+      backgroundColor: this.props.baseColor,
+
+    }
     return (
       <div id="rightsidebaro">
         
@@ -165,8 +170,9 @@ class ComplaintDetails extends Component {
         <div id="complain"><h1>Delays made me</h1></div> 
         {/* <span className="progress-step">Step {this.props.currStep}</span>
         <progress className="progress" style={style}></progress> */}
+        {/* <button onClick={this.props.goBack}>back</button> */}
 
-        <ComplaintDetailsList id="complaints-options-list" complaintData = {complaint_items[this.props.complaintType]} complaintType={this.props.complaintType} checkItem={this.complaintCheckEvent} items={station_items}/>
+        <ComplaintDetailsList bgStyle={bgColor} id="complaints-options-list" complaintData = {complaint_items[this.props.complaintType]} complaintType={this.props.complaintType} checkItem={this.complaintCheckEvent} items={station_items}/>
         
         <div className="ortext">
         <h4 > OR </h4>
@@ -230,11 +236,11 @@ class ComplaintDetailsList extends Component{
         {
           this.props.complaintData.map(function(item){
             return(
-            <div id="ck-button" key={item.id} >
-            <label>
-                <input onClick={(e) => this.itemChecked(e, item.id, item.text)} key={item.id} type="checkbox" value="missed appointment"/><span>{item.text}</span>
-            </label>
-          </div>
+              <div style={this.props.bgStyle} id="ck-button" key={item.id} >
+                <label>
+                    <input onClick={(e) => this.itemChecked(e, item.id, item.text)} key={item.id} type="checkbox" value="missed appointment"/><span>{item.text}</span>
+                </label>
+              </div>
             )
           }.bind(this))
         }

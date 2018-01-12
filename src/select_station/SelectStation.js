@@ -90,6 +90,11 @@ class SelectStation extends Component {
         var style = {
             width : (this.props.currStep / 4 * 100) + '%'
           }
+
+          var bgColor = {
+            backgroundColor: this.props.baseColor,
+
+          }
         return (
             <div id="rightsidebaro">
             
@@ -98,10 +103,11 @@ class SelectStation extends Component {
                 <div id="train"><h1>Select a train station</h1></div>  
                 {/* <span className="progress-step">Step {this.props.currStep}</span>
                 <progress className="progress" style={style}></progress> */}
+                {/* <button onClick={this.props.goBack}>back</button> */}
                 <div id="trainlines">
                     <div className="filter-list">
                     <input type="text" placeholder="Search" onChange={this.filterList}/>
-                    <List saveData={this.saveAndContinue}items={this.state.selectedItems}/>
+                    <List bgStyle={bgColor} saveData={this.saveAndContinue}items={this.state.selectedItems}/>
                     </div>
                 </div>
             </div>
@@ -116,7 +122,7 @@ class List extends Component {
             <ul>
             {
               this.props.items.map(function(item) {
-                return <li onClick={(e) => this.props.saveData(e, item.properties.name, item)} key={item.properties.name}>{item.properties.name}</li>
+                return <li style={this.props.bgStyle} onClick={(e) => this.props.saveData(e, item.properties.name, item)} key={item.properties.name}>{item.properties.name}</li>
               }.bind(this))
              }
             </ul>

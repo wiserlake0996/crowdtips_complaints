@@ -52,8 +52,12 @@ h1, h2, h3 {
   height: 100vh; 
   width: 25%; 
   background-color: rgba(20,20,20,0.9);
-  overflow-y: hidden;
+  overflow-y: auto; 
 
+}
+
+ul{
+  height: 300px;
 }
 
 #rightsidebar #header, #valueproposition, #train, #trainlines, #complain, #complaints {
@@ -249,18 +253,19 @@ input:focus {
 
 
 #contactForm { 
-  display: none;
+  display: block;
 
   border: 6px solid salmon; 
   padding: 2em;
-  width: 400px;
-  text-align: center;
+  width: 60%;
+  /* text-align: center; */
   background: #fff;
-  position: fixed;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  -webkit-transform: translate(-50%,-50%);
+  /* position: fixed; */
+  /* top:50%;
+  left:50%; */
+  /* transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%); */
+  margin: auto 0;
   z-index: 30;
   
 }
@@ -272,7 +277,7 @@ input:focus {
   font-size: inherit;
   
   display: block; 
-  width: 280px; 
+  width: 90%; 
   padding: .4em;
 }
 #contace-textarea { height: 80px; resize: none; }
@@ -291,4 +296,15 @@ input:focus {
   font-size: 1.2em;
   border: none;
   height: 30px;
+}
+
+#cancel-button {
+  background-color: rgb(175, 76, 76); /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
