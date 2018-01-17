@@ -4,6 +4,16 @@ class FeedbackDataPoints extends Component{
 
 
     render(){
+    var bgColor = {
+      backgroundColor: this.props.baseColor,
+
+    }
+        var display = commendationData.map(function(item){
+            var camelCase = item.value.toUpperCase();
+            return(
+                <div style={bgColor} onClick={(e) => this.saveAndContinue(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
+            )
+        }.bind(this))
         return(
             <div>
                 <div id="header">
@@ -19,17 +29,9 @@ class FeedbackDataPoints extends Component{
                 </div>
 
                 <div id="complaints">
-                    <div className="hatepoint">
-                        <h3> Commend </h3>
-                    </div>               
-                    <div className="hatepoint">
-                        <h3> Complain about</h3>
-                    </div> 
+                    {display}
                 </div>         
-
-                <div id="complain">  
-                    <h1  style={{textAlign:"center", marginTop:"140px"}}> The MTA! </h1>
-                </div>       
+     
             </div>
         )
     }
@@ -37,11 +39,6 @@ class FeedbackDataPoints extends Component{
 
 export default FeedbackDataPoints;
 
-var complaintsData = [
-    {
-
-    }
-]
 
 var commendationData = [
     {
@@ -64,9 +61,3 @@ var commendationData = [
     }
 ]
 
-            <div style={bgColor} onClick={(e) => this.saveAndContinue(e, "delays")} className="hatepoint"><h3>Delays</h3></div>
-            <div style={bgColor} onClick={(e) => this.saveAndContinue(e, "staff")} className="hatepoint"><h3>Staff</h3></div>
-            <div style={bgColor} onClick={(e) => this.saveAndContinue(e, "tickets")} className="hatepoint"><h3>Tickets</h3></div>
-            <div style={bgColor} onClick={(e) => this.saveAndContinue(e, "dirtyness")} className="hatepoint"><h3>Dirtyness</h3></div>
-            <div style={bgColor} onClick={(e) => this.saveAndContinue(e, "security")} className="hatepoint"><h3>Security</h3></div>
-            <div style={bgColor} onClick={(e) => this.saveAndShowOtherPage(e, "other")} className="hatepoint"><h3>Other</h3></div>
