@@ -9,6 +9,7 @@ import SelectLine from './select_line/SelectLine'
 import sleep from 'await-sleep'
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import OtherComplaintBox from './select_complaint/OtherComplaint';
+import FeedbackType from './feedback/FeedbackType'
 
 var $ = require("jquery");
 
@@ -549,11 +550,17 @@ class App extends Component {
   
         )         
 
-      case 3:
+      /*case 3:
         return (<SelectComplaint goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues}/> 
-        )     
+        )     */
+
+        case 3:
+        return (<FeedbackType goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+        nextStep={this.nextStep}
+        saveValues={this.saveValues}/> 
+        ) 
       case 4:
         return (<ComplaintDetails goBack={this.previousStep} baseColor={this.state.baseColor} key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}

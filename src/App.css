@@ -107,7 +107,7 @@ ul{
   background-color: rgb(255, 99, 25); 
 }
 
-.lightgreen {
+.light_green {
   background-color: rgb(157, 195, 83); 
 }
 
@@ -115,11 +115,11 @@ ul{
   background-color: rgb(137, 77, 34); 
 }
 
-.lightgray {
+.light_gray {
   background-color: rgb(146, 147, 152); 
 }
 
-.darkgray {
+.dark_gray {
   background-color: rgb(106, 107, 109); 
 }
 
@@ -128,13 +128,13 @@ ul{
   color: black;
 }
 
-.anotherblue {
+.another_blue {
   background-color: rgb(87, 192, 221); 
 }
 
 .hatepoint {
   background: red;
-  width: 40%;
+  width: 45%;
   height: 100px;
   line-height: 100px; 
   text-align: center;

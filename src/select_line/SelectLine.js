@@ -47,6 +47,24 @@ saveAndContinue(e, data, color) {
       var divStyle = {
         display:this.state.disableDiv?'block':'none'
       };
+
+
+      var linesDisplay = lineData.map(function(item){
+        var clas = "lines "+ item.color
+        if(item.value == "T"){
+            return(
+
+            <div ref = {item.value}  className={clas} onClick={(e) => {alert("Data not available for line!")}}>
+                <h2>{item.value}</h2>
+            </div>           
+            )
+        }
+        return(
+            <div ref = {item.value}  className={clas} onClick={(e) => this.saveAndContinue(e, item.value, item.color)}>
+                <h2>{item.value}</h2>
+            </div>    
+        )
+      }.bind(this))
     return (
         <div id="rightsidebaro">
         
@@ -56,32 +74,8 @@ saveAndContinue(e, data, color) {
         {/* <span className="progress-step">Step {this.props.currStep}</span>
         <progress className="progress" style={style}></progress> */}
         <div id="trainlines">
-            <div defaultValue = "1" onClick={(e) => this.saveAndContinue(e, "1", "red")} ref = "1" className="lines red"><h2  defaultValue = "1">1</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "2", "red")} ref = "2"  className="lines red"><h2>2</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "3","red")} ref = "3"  className="lines red"><h2>3</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "4","green")} ref = "4"  className="lines green"><h2>4</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "5","green")} ref = "5"  className="lines green"><h2>5</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "6","green")} ref = "6"  className="lines green"><h2>6</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "7","purple")} ref = "7"  className="lines purple"><h2>7</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "a","blue")} ref = "a"  className="lines blue"><h2>A</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "c","blue")} ref = "c"  className="lines blue"><h2>C</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "e","blue")} ref = "e"  className="lines blue"><h2>E</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "b", "orange")} ref = "b"  className="lines orange"><h2>B</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "d","orange")} ref = "d"  className="lines orange"><h2>D</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "f","orange")} ref = "f"  className="lines orange"><h2>F</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "m","orange")} ref = "m"  className="lines orange"><h2>M</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "g","light_green")} ref = "g"  className="lines lightgreen"><h2>G</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "j","brown")} ref = "j"  className="lines brown"><h2>J</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "z","brown")} ref = "z"  className="lines brown"><h2>Z</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "l","light_gray")} ref = "l"  className="lines lightgray"><h2>L</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "s","dark_gray")} ref = "s"  className="lines darkgray"><h2>S</h2></div>
-            <div onClick={(e) => {/*this.saveAndContinue(e, "t","another_blue")*/alert("Data not available for line!")}} ref = "t"  className="lines anotherblue"><h2>T</h2></div>
-
-            <div onClick={(e) => this.saveAndContinue(e, "n","yellow")} ref = "n"  className="lines yellow"><h2>N</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "q","yellow")} ref = "q"  className="lines yellow"><h2>Q</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "r","yellow")} ref = "r"  className="lines yellow"><h2>R</h2></div>
-            <div onClick={(e) => this.saveAndContinue(e, "w","yellow")} ref = "w"  className="lines yellow"><h2>W</h2></div>
-        </div>
+            {linesDisplay}
+         </div>
         
         <div id="footer"> &copy;  Crowdtips 2018</div>
 
@@ -91,3 +85,81 @@ saveAndContinue(e, data, color) {
 }
 
 export default SelectLine;
+
+var lineData = [
+    {
+        value: "1",
+        color: "red"
+    },
+        {
+        value: "2",
+        color: "red"
+    },
+        {
+        value: "3",
+        color: "red"
+    },    {
+        value: "4",
+        color: "green"
+    },    {
+        value: "5",
+        color: "green"
+    },    {
+        value: "6",
+        color: "green"
+    },    {
+        value: "7",
+        color: "purple"
+    },    {
+        value: "A",
+        color: "blue"
+    },    {
+        value: "C",
+        color: "blue"
+    },    {
+        value: "E",
+        color: "blue"
+    },    {
+        value: "B",
+        color: "orange"
+    },    {
+        value: "D",
+        color: "orange"
+    },    {
+        value: "F",
+        color: "orange"
+    },    {
+        value: "M",
+        color: "orange"
+    },    {
+        value: "G",
+        color: "light_green"
+    },    {
+        value: "J",
+        color: "brown"
+    },    {
+        value: "Z",
+        color: "brown"
+    },    {
+        value: "L",
+        color: "light_gray"
+    },    {
+        value: "S",
+        color: "dark_gray"
+    },{
+        value:"T",
+        color:"another_blue"
+    },    {
+        value: "N",
+        color: "yellow"
+    },    {
+        value: "Q",
+        color: "yellow"
+    },    {
+        value: "R",
+        color: "yellow"
+    },    {
+        value: "W",
+        color: "yellow"
+    }
+]
