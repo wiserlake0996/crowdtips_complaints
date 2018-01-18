@@ -3,21 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 
 import SelectStation from './select_station/SelectStation'
-import SelectComplaint from './select_complaint/SelectComplaint'
-import ComplaintDetails from './complaint_details/ComplaintDetails'
 import SelectLine from './select_line/SelectLine'
 import sleep from 'await-sleep'
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import OtherComplaintBox from './select_complaint/OtherComplaint';
 import FeedbackType from './feedback/FeedbackType'
 import FeedbackInput from './feedback/FeedbackInput'
-
-import FeedbackDataPoints from './feedback/FeedbackDataPoints'
+import FeedbackDataPoints from './feedback/FeedBackDataPoints'
 
 var $ = require("jquery");
-
 var firebase = require('firebase')
-
 
 var fieldValues = {
   station_name     : null,
@@ -45,7 +40,7 @@ class App extends Component {
     this.openStep = this.openStep.bind(this)
     this.saveValues = this.saveValues.bind(this)
     this.showStep = this.showStep.bind(this)
-    this.setComplaintType = this.setComplaintType.bind(this)
+    this.setFeedbackType = this.setFeedbackType.bind(this)
     this.submitData = this.submitData.bind(this)
     this.updateLineSelection = this.updateLineSelection.bind(this)
     this.initFirebase = this.initFirebase.bind(this)
@@ -58,11 +53,10 @@ class App extends Component {
     this.updateSelectedStation = this.updateSelectedStation.bind(this)
     this.loadSpecificStationToMap = this.loadSpecificStationToMap.bind(this)
     this.populateMapWithAllStations = this.populateMapWithAllStations.bind(this)
-    this.openContactForm = this.openContactForm.bind(this)
-    this.closeContactForm = this.closeContactForm.bind(this)
     this.writeUserData = this.writeUserData.bind(this)
     this.setBaseColor = this.setBaseColor.bind(this)
     this.resetAll = this.resetAll.bind(this)
+    this.setFeedbackReason = this.setFeedbackReason.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -360,9 +354,15 @@ class App extends Component {
     this.populateMapWithAllStations()
   }
 
-  setComplaintType(complaint){
+  setFeedbackType(data){
     this.setState({
-      currentComplaintType: complaint
+      currentFeedbackType: data
+    })
+  }
+
+  setFeedbackReason(data){
+    this.setState({
+      currentFeedbackReason: data
     })
   }
 
@@ -370,6 +370,8 @@ class App extends Component {
     return function() {
 
       fieldValues = Object.assign({}, fieldValues, fields)
+      console.log(fieldValues)
+
     }()
   }
   
@@ -385,7 +387,6 @@ class App extends Component {
     })
   }
   
-  // Same as nextStep, but decrementing
   previousStep() {
     this.setState({
       step : this.state.step - 1
@@ -514,18 +515,17 @@ class App extends Component {
 
   submitData(){
 
-    //this.openContactForm()
     var timeInMs = Date.now();
-
     var time={
       timestamp: timeInMs
     }
     fieldValues = Object.assign({}, fieldValues, time) 
+       
+    // WRITE TO FIREBASE
     this.writeData(fieldValues)
 
-    // WRITE TO FIREBASE
     this.setState({
-      step : 6
+      step : 7
     })
 
   }
@@ -534,68 +534,48 @@ class App extends Component {
     switch(this.state.step){
       case 1:
         return (
- 
-        
         <SelectLine setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues} />  
-
  
         )     
         
-
       case 2:
         return ( 
 
         <SelectStation baseColor={this.state.baseColor} updateSelectedStation = {this.updateSelectedStation} key="step2" selectedLine = {this.state.selectedLine} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues} goBack={this.previousStep}/>
-  
+          nextStep={this.nextStep}
+          saveValues={this.saveValues} goBack={this.previousStep}/>
         )         
-
-      /*case 3:
-        return (<SelectComplaint goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues}/> 
-        )     */
-
-        case 3:
-        return (<FeedbackType goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setComplaint={this.setComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues}/> 
+      case 3:
+        return (
+          <FeedbackType goBack={this.previousStep} baseColor={this.state.baseColor} openStep={this.openStep} key="step3" setFeedbackType={this.setFeedbackType} currStep ={this.state.step} fieldValues={fieldValues}
+          nextStep={this.nextStep}
+          saveValues={this.saveValues}/> 
         ) 
-      /*case 4:
-        return (<ComplaintDetails goBack={this.previousStep} baseColor={this.state.baseColor} key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues} submitData={this.submitData}
-        /> 
-        )     */
-        case 4:
-        return (<FeedbackDataPoints goBack={this.previousStep} baseColor={this.state.baseColor} key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues} submitData={this.submitData}
-        /> 
+
+      case 4:
+        return (
+          <FeedbackDataPoints openStep={this.openStep} setFeedbackReason={this.setFeedbackReason}goBack={this.previousStep} baseColor={this.state.baseColor} key="step4" complaintType={this.state.currentComplaintType} currStep ={this.state.step} fieldValues={fieldValues}
+          nextStep={this.nextStep}
+          saveValues={this.saveValues} 
+          /> 
         )  
 
-        case 5:
+      case 5:
         return(
-                <FeedbackInput setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues} />  
+          <FeedbackInput setTheme={this.setBaseColor} key="step5" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+            nextStep={this.nextStep}
+            saveValues={this.saveValues} submitData={this.submitData} />  
+      )  
+      case 6:
+        return (
+          <OtherComplaintBox resetData = {this.resetAll} baseColor={this.state.baseColor} submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
+      )
+      case 7:
 
- 
-        )  
-        
-        case 6:
-        return (<OtherComplaintBox resetData = {this.resetAll} baseColor={this.state.baseColor} submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
-       
-        )
-        
-        case 7:
-
-          this.openContactForm()
         return(
-          <div id="contactForm">
+          <div id="contactForm" key="step7">
 
             <h1 className="contact-form-header">Keep in touch!</h1>
             <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
@@ -606,75 +586,30 @@ class App extends Component {
 
               <button onClick={this.writeUserData}className="formBtn" >Submit </button>
               <button onClick={this.resetAll} style={{backgroundColor:'red'}}id="formBtn">Cancel</button>
-              {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> */}
             </form>
           </div>
-        )
+      )
     }
   }
 
-  openContactForm(){
-
-    $("#contactForm").fadeToggle();
-    
-  }
-
-  closeContactForm(){
-    var container = $("#contactForm");
-    container.fadeOut();
-  }
-
   render() {
-
-    // $(document).mouseup(function (e) {
-    //   var container = $("#contactForm");
-  
-    //   if (!container.is(e.target) // if the target of the click isn't the container...
-    //       && container.has(e.target).length === 0) // ... nor a descendant of the container
-    //   {
-    //       container.fadeOut();
-    //   }
-    // });
 
     var style = {
       width : (this.state.step / 4 * 100) + '%'
     }
     return(
       <div id="page-container">
-        {/* <div id="contactForm">
-
-          <h1 className="contact-form-header">Keep in touch!</h1>
-          <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
-
-          <form action="#">
-            <input ref="userName" id="contact-input" placeholder="Name" type="text" required />
-            <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
-
-            <input onClick={this.writeUserData}className="formBtn" type="submit" />
-            {/* <input onClick={this.closeContactForm} value="Cancel"className="formBtn" type="reset" /> 
-          </form>
-          </div> */}
-
-        
         <div id="rightsidebar">
-
-
           <ReactCSSTransitionReplace
             transitionName="cross-fade"
             transitionEnterTimeout={500}
             transitionLeaveTimeout={10}
           > 
-
             {this.showStep()}
-
           </ReactCSSTransitionReplace>
-
         </div>
-
         <div id="mapbody">
-
         </div>
-
       </div>
     )
   }

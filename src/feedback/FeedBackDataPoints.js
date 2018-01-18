@@ -2,18 +2,54 @@ import React, { Component } from 'react';
 
 class FeedbackDataPoints extends Component{
 
+    constructor(props){
+        super(props)
+
+        this.saveAndContinue = this.saveAndContinue.bind(this)
+        this.saveAndShowOtherPage = this.saveAndShowOtherPage.bind(this)
+    }
+   
+   
+    saveAndContinue(e, data) {
+        e.preventDefault()
+
+        console.log(data)
+        var out ={
+            complaintReason: data
+        }
+        this.props.setFeedbackReason(data)
+        this.props.saveValues(out)
+        this.props.nextStep()
+    }
+
+    saveAndShowOtherPage(e, data){
+        var out ={
+            complaintReason: data
+        }
+        this.props.setFeedbackReason(data)
+        this.props.saveValues(out)
+
+        this.props.openStep(6)
+    }
 
     render(){
-    var bgColor = {
-      backgroundColor: this.props.baseColor,
+        var bgColor = {
+            backgroundColor: this.props.baseColor,
+        }
 
-    }
         var display = commendationData.map(function(item){
             var camelCase = item.value.toUpperCase();
+
+            if(item.value == "other"){
+                return(
+                    <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndShowOtherPage(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
+                )
+            }
             return(
-                <div style={bgColor} onClick={(e) => this.saveAndContinue(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
+                <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndContinue(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
             )
         }.bind(this))
+
         return(
             <div>
                 <div id="header">
@@ -48,13 +84,13 @@ var commendationData = [
         value:'staff'
     },
     {
-        value:'ticket machines'
+        value:'tickets'
     },
     {
         value:'safety'
     },
     {
-        value:'cleanliness'
+        value:'sanitation'
     },
     {
         value:'other'

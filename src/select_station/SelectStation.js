@@ -98,8 +98,7 @@ class SelectStation extends Component {
         return (
             <div id="rightsidebaro">
             
-                <div id="header"><h1>I hate the MTA!</h1></div>
-                <div id="valueproposition"><h3>Do you agree? if yes, drop your complains here  and we will send it to the MTA on behalf of you!</h3></div>
+                <div id="header"><h1>MTA Feedback</h1></div>
                 <div id="train"><h1>Select a train station</h1></div>  
                 {/* <span className="progress-step">Step {this.props.currStep}</span>
                 <progress className="progress" style={style}></progress> */}
