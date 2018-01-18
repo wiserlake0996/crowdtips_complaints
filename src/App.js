@@ -535,20 +535,15 @@ class App extends Component {
       case 1:
         return (
  
-/*        
+        
         <SelectLine setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues} />  
 
  
-        )     */
+        )     
         
-        <FeedbackInput setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
-        nextStep={this.nextStep}
-        saveValues={this.saveValues} />  
 
- 
-        )  
       case 2:
         return ( 
 
@@ -581,13 +576,22 @@ class App extends Component {
         saveValues={this.saveValues} submitData={this.submitData}
         /> 
         )  
-        
+
         case 5:
+        return(
+                <FeedbackInput setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+        nextStep={this.nextStep}
+        saveValues={this.saveValues} />  
+
+ 
+        )  
+        
+        case 6:
         return (<OtherComplaintBox resetData = {this.resetAll} baseColor={this.state.baseColor} submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
        
         )
         
-        case 6:
+        case 7:
 
           this.openContactForm()
         return(
