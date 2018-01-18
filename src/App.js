@@ -10,6 +10,8 @@ import sleep from 'await-sleep'
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import OtherComplaintBox from './select_complaint/OtherComplaint';
 import FeedbackType from './feedback/FeedbackType'
+import FeedbackInput from './feedback/FeedbackInput'
+
 import FeedbackDataPoints from './feedback/FeedbackDataPoints'
 
 var $ = require("jquery");
@@ -533,14 +535,20 @@ class App extends Component {
       case 1:
         return (
  
-        
+/*        
         <SelectLine setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
         nextStep={this.nextStep}
         saveValues={this.saveValues} />  
 
  
-        )     
+        )     */
+        
+        <FeedbackInput setTheme={this.setBaseColor} key="step1" updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+        nextStep={this.nextStep}
+        saveValues={this.saveValues} />  
 
+ 
+        )  
       case 2:
         return ( 
 
