@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component } from 'react';
 import { Follow, Mention } from 'react-twitter-widgets'
 //import Icon, {Telegram, Instagram} from 'react-share-icons';
@@ -19,6 +21,16 @@ import FeedbackDataPoints from './feedback/FeedBackDataPoints'
 
 var $ = require("jquery");
 var firebase = require('firebase')
+
+var MobileDetect = require('mobile-detect'),
+    md = new MobileDetect(
+    'Mozilla/5.0 (Linux; U; Android 4.0.3; en-in; SonyEricssonMT11i' +
+    ' Build/4.1.A.0.562) AppleWebKit/534.30 (KHTML, like Gecko)' +
+    ' Version/4.0 Mobile Safari/534.30');
+
+
+
+
 
 var fieldValues = {
   station_name     : null,
@@ -64,6 +76,7 @@ class App extends Component {
     this.resetAll = this.resetAll.bind(this)
     this.setFeedbackReason = this.setFeedbackReason.bind(this)
     this.getImageForStationColor= this.getImageForStationColor.bind(this)
+    this.getUserInformation = this.getUserInformation.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -75,8 +88,50 @@ class App extends Component {
 
   componentDidMount(){
     this.initFirebase()
+    this.getUserInformation()
+    
     this.loadMap()
   }
+
+    getUserInformation(){
+
+      //location and Ip address
+        $.getJSON('https://api.ipify.org?format=json', function(data){
+            console.log(data.ip);
+            var ip = data.ip
+            
+            $.get("https://freegeoip.net/json/"+String(ip), function(data2){
+                
+              var data = {
+                ip_address: ip,
+                location: data2
+              }
+
+              this.saveValues({user:data})
+            }.bind(this))
+        }.bind(this));
+
+        //device type data
+
+        var deviceData = {
+          // mobile:md.mobile || "",
+          // phone:md.phone || "",
+          // tablet:md.tablet || "",
+          // agent: md.userAgent || "",
+          os: md.os() || "",
+          is_iphone: md.is('iphone') || "",
+          is_bot: md.is('bot') || "",
+          screen_height: window.myScreenHeight || "",
+          screen_width: window.myScreenWidth || "",
+          browser_height: window.innerHeight || "",
+          browser_width: window.innerWidth || ""
+          
+        }
+
+        this.saveValues({device:deviceData})
+
+
+    }
 
   setBaseColor(color){
     this.setState({baseColor:color})
@@ -334,6 +389,8 @@ class App extends Component {
     };
     firebase.initializeApp(config);
     this.ref = firebase.database().ref('complaints')
+
+   // this.ref.onDisconnect()
   }
 
   writeData(data){
