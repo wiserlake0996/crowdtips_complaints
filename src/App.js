@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import { Follow, Mention } from 'react-twitter-widgets'
+//import Icon, {Telegram, Instagram} from 'react-share-icons';
+//import Instagram from 'react-share-icons/lib/Instagram';
+import { Line, Circle } from 'rc-progress';
+
 import logo from './logo.svg';
 import './App.css';
+
 
 import SelectStation from './select_station/SelectStation'
 import SelectLine from './select_line/SelectLine'
@@ -57,6 +63,7 @@ class App extends Component {
     this.setBaseColor = this.setBaseColor.bind(this)
     this.resetAll = this.resetAll.bind(this)
     this.setFeedbackReason = this.setFeedbackReason.bind(this)
+    this.getImageForStationColor= this.getImageForStationColor.bind(this)
 
     this.ref = null
     this.GMapApi = null
@@ -104,17 +111,31 @@ class App extends Component {
 
     this.clearMapContents()
 
-    this.loadStationToMapByColor("red")
-    this.loadStationToMapByColor("brown")
-    this.loadStationToMapByColor("green")
-    this.loadStationToMapByColor("light_gray")
-    this.loadStationToMapByColor("dark_gray")
-    this.loadStationToMapByColor("blue")
-    this.loadStationToMapByColor("yellow")
-    this.loadStationToMapByColor("light_green")
-    this.loadStationToMapByColor("green")
+    // this.loadStationToMapByColor("red")
+    // this.loadStationToMapByColor("brown")
+    // this.loadStationToMapByColor("green")
+    // this.loadStationToMapByColor("light_gray")
+    // this.loadStationToMapByColor("dark_gray")
+    // this.loadStationToMapByColor("blue")
+    // this.loadStationToMapByColor("yellow")
+    // this.loadStationToMapByColor("light_green")
+    // this.loadStationToMapByColor("green")
 
-    this.loadStationToMapByColor("purple")
+    // this.loadStationToMapByColor("purple")
+
+    var keys = Object.keys(this.state.stationsGroupedByColour)
+    var count = 0
+    var marker;
+    for (var k in this.state.stationsGroupedByColour){
+      for (var i = 0; i< this.state.stationsGroupedByColour[k].length; i++){
+        var data = this.state.stationsGroupedByColour[k][i]
+        this.loadSpecificStationToMap(data, k, count, marker)
+        count = count + 1
+        console.log(count)
+      }
+    }
+
+
   }
 
   loadAndGroupStationsByColour(){
@@ -175,13 +196,8 @@ class App extends Component {
     })    
   }
 
-  loadStationToMapByColor(stationColor){
 
-    //await(2000)
-    var markers = []
-    var MapApi = this.GoogleApi
-   
-    var map = this.map
+  getImageForStationColor(stationColor){
     var imageUrl = 'http://localhost:3000/station_icons/'
 
     if(stationColor == "red"){
@@ -218,6 +234,20 @@ class App extends Component {
     if(stationColor == "another_blue"){
       imageUrl = imageUrl+"anotherblue.png"
     }
+
+    return imageUrl
+  }
+  loadStationToMapByColor(stationColor){
+
+    //await(2000)
+    var markers = []
+    var MapApi = this.GoogleApi
+   
+    var map = this.map
+
+    var imageUrl = this.getImageForStationColor(stationColor)
+    var data = this.state.stationsGroupedByColour[stationColor]
+
     var image = {
       url: imageUrl,
       // This marker is 20 pixels wide by 32 pixels high.
@@ -313,22 +343,22 @@ class App extends Component {
     var updates = {};
     updates['/complaints/' + newPostKey] = data;
     firebase.database().ref().update(updates);
-    alert("Submission Received! Thank you")
+   // alert("Submission Received! Thank you")
   }
 
 
   writeUserData(e){
     e.preventDefault()
     var data = {
-      name: this.refs.userName.value || "",
-      email: this.refs.userEmail.value || "",
+      // name: this.refs.userName.value || "",
+      // email: this.refs.userEmail.value || "",
+      suggestion: this.refs.suggestion ||"",
       complaint_key: this.complaintKey || "none"
     }
     var newPostKey = firebase.database().ref().child('subscriptions').push().key;
     var updates = {};
     updates['/subscriptions/' + newPostKey] = data;
     firebase.database().ref().update(updates);
-    this.closeContactForm()
     this.complaintKey = ""
     this.resetAll()
     
@@ -447,9 +477,10 @@ class App extends Component {
     }
   }
 
-  loadSpecificStationToMap(stationData, lineColor){
+  loadSpecificStationToMap(stationData, lineColor, index=0){
 
-    this.clearMapContents();
+    if(index == 0)
+      this.clearMapContents();
 
     var markers = []
     var MapApi = this.GoogleApi
@@ -473,10 +504,11 @@ class App extends Component {
     };
 
     var infowindow = new MapApi.InfoWindow();
-    var marker, i;
+    var marker;
 
       var station = stationData
       var name = station["properties"]["name"]  
+
       marker = new MapApi.Marker({
         position: new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0]),
         map: map,
@@ -492,8 +524,8 @@ class App extends Component {
     MapApi.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
           var content = "<div>"+
-                      "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
-                      "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
+                      "<h2 className='info-window-header'>"+ this.stationMarkers[i]["name"]+"</h2>"+
+                      "<h4 className='info-window-body'>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
           var selection ={
               name:this.stationMarkers[i]["name"],
               line:this.stationMarkers[i]["line"]
@@ -503,7 +535,7 @@ class App extends Component {
 
         //this.props.stationSelection(selection)
       }.bind(this)
-    }.bind(this))(marker, 0));
+    }.bind(this))(marker, index));
 
     var myLatlng = new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0])
     this.map.setZoom(13);
@@ -577,16 +609,27 @@ class App extends Component {
         return(
           <div id="contactForm" key="step7">
 
-            <h1 className="contact-form-header">Keep in touch!</h1>
-            <small className="contact-form-description">Add your email below to receive a summary and updates about your complaint </small>
+            <h1 className="contact-form-header">Thank you for your submission!</h1>
+            <small className="contact-form-description">Connect with us on social media </small>
+            <Follow username="crowdtips_xyz" options={{size:"large"}}/>
+            <Mention username="crowdtips_xyz" options={{size:"large"}}/>
+                    <a href="https://instagram.com/crowdtips">
+
+              <img src="http://www.thesiteshed.com/wp-content/uploads/2016/02/Follow-us-on-Instagram.png" width="100" height="40" className="shares-instagram"/>
+
+              </a>
 
             <form action="#">
-              <input ref="userName" id="contact-input" placeholder="Name" type="text" required />
-              <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />
+              {/*<input ref="userName" id="contact-input" placeholder="Name" type="text" required />
+              <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />*/}
+                <textarea placeholder="Any suggestions on how to improve the site.."rows="10" id="complaint-text-area" ref="text"></textarea>
 
               <button onClick={this.writeUserData}className="formBtn" >Submit </button>
               <button onClick={this.resetAll} style={{backgroundColor:'red'}}id="formBtn">Cancel</button>
             </form>
+
+            {/*<a href="https://twitter.com/crowdtips_xyz?ref_src=twsrc%5Etfw" className="twitter-follow-button" data-show-count="false">Follow @crowdtips_xyz</a>*/}
+
           </div>
       )
     }
@@ -594,16 +637,17 @@ class App extends Component {
 
   render() {
 
-    var style = {
-      width : (this.state.step / 4 * 100) + '%'
-    }
+    var progress = this.state.step / 7 * 100
+  
     return(
       <div id="page-container">
         <div id="rightsidebar">
+          <Line percent={progress} strokeWidth="4" strokeColor="#31B3F4" />
+
           <ReactCSSTransitionReplace
-            transitionName="cross-fade"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={10}
+            transitionName="carousel-swap"
+            transitionEnterTimeout={180}
+            transitionLeaveTimeout={91}
           > 
             {this.showStep()}
           </ReactCSSTransitionReplace>

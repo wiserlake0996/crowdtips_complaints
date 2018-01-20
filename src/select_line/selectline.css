@@ -10,6 +10,8 @@
     background: red;
     text-align: center;
     vertical-align: middle;
+    color: white;
+    
   }
   
   .lines:hover {
