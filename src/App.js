@@ -131,7 +131,6 @@ class App extends Component {
         var data = this.state.stationsGroupedByColour[k][i]
         this.loadSpecificStationToMap(data, k, count, marker)
         count = count + 1
-        console.log(count)
       }
     }
 

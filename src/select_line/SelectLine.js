@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import './selectline.css'
+
+var $ = require("jquery");
 class SelectLine extends Component {
 
     constructor(props){
@@ -13,6 +15,8 @@ class SelectLine extends Component {
          this.disableDiv = this.disableDiv.bind(this);
          this.enableDiv = this.enableDiv.bind(this);
     }
+
+
 
 saveAndContinue(e, data, color) {
     e.preventDefault()
@@ -82,6 +86,8 @@ saveAndContinue(e, data, color) {
     );
   }
 }
+
+
 
 export default SelectLine;
 
