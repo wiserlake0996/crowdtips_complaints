@@ -23,10 +23,11 @@ var $ = require("jquery");
 var firebase = require('firebase')
 
 var MobileDetect = require('mobile-detect'),
-    md = new MobileDetect(
-    'Mozilla/5.0 (Linux; U; Android 4.0.3; en-in; SonyEricssonMT11i' +
-    ' Build/4.1.A.0.562) AppleWebKit/534.30 (KHTML, like Gecko)' +
-    ' Version/4.0 Mobile Safari/534.30');
+    md = new MobileDetect(window.navigator.userAgent);
+    var keys = ["iPad", "NexusTablet", "SamsungTablet", "Kindle", "SurfaceTablet", "HPTablet", "AsusTablet", "BlackBerryTablet", "HTCtablet", "MotorolaTablet", "NookTablet", "AcerTablet", "ToshibaTablet", "LGTablet", "FujitsuTablet", "PrestigioTablet", "LenovoTablet", "YarvikTablet", "MedionTablet", "ArnovaTablet", "IntensoTablet", "IRUTablet", "MegafonTablet", "EbodaTablet", "AllViewTablet", "ArchosTablet", "AinolTablet", "SonyTablet", "CubeTablet", "CobyTablet", "MIDTablet", "SMiTTablet", "RockChipTablet", "FlyTablet", "bqTablet", "HuaweiTablet", "NecTablet", "PantechTablet", "BronchoTablet", "VersusTablet", "ZyncTablet", "PositivoTablet", "NabiTablet", "KoboTablet", "DanewTablet", "TexetTablet", "PlaystationTablet", "TrekstorTablet", "PyleAudioTablet", "AdvanTablet", "DanyTechTablet", "GalapadTablet", "MicromaxTablet", "KarbonnTablet", "AllFineTablet", "PROSCANTablet", "YONESTablet", "ChangJiaTablet", "GUTablet", "PointOfViewTablet", "OvermaxTablet", "HCLTablet", "DPSTablet", "VistureTablet", "CrestaTablet", "MediatekTablet", "ConcordeTablet", "GoCleverTablet", "ModecomTablet", "VoninoTablet", "ECSTablet", "StorexTablet", "VodafoneTablet", "EssentielBTablet", "RossMoorTablet", "iMobileTablet", "TolinoTablet", "AudioSonicTablet", "AMPETablet", "SkkTablet", "TecnoTablet", "JXDTablet", "iJoyTablet", "Hudl", "TelstraTablet", "GenericTablet", "iPhone", "BlackBerry", "HTC", "Nexus", "Dell", "Motorola", "Samsung", "LG", "Sony", "Asus", "Micromax", "Palm", "Vertu", "Pantech", "Fly", "iMobile", "SimValley", "GenericPhone", "AndroidOS", "BlackBerryOS", "PalmOS", "SymbianOS", "WindowsMobileOS", "WindowsPhoneOS", "iOS", "MeeGoOS", "MaemoOS", "JavaOS", "webOS", "badaOS", "BREWOS", "Chrome", "Dolfin", "Opera", "Skyfire", "IE", "Firefox", "Bolt", "TeaShark", "Blazer", "Safari", "Tizen", "UCBrowser", "DiigoBrowser", "Puffin", "Mercury", "GenericBrowser", "DesktopMode", "TV", "WebKit", "Bot", "MobileBot", "Console", "Watch"];
+    var versionKeys = ["Mobile", "Build", "Version", "VendorID", "iPad", "iPhone", "iPod", "Kindle", "Chrome", "Coast", "Dolfin", "Firefox", "Fennec", "IE", "NetFront", "NokiaBrowser", "Opera", "Opera Mini", "Opera Mobi", "UC Browser", "MQQBrowser", "MicroMessenger", "Safari", "Skyfire", "Tizen", "Webkit", "Gecko", "Trident", "Presto", "iOS", "Android", "BlackBerry", "BREW", "Java", "Windows Phone OS", "Windows Phone", "Windows CE", "Windows NT", "Symbian", "webOS"];
+
+
 
 
 
@@ -77,7 +78,7 @@ class App extends Component {
     this.setFeedbackReason = this.setFeedbackReason.bind(this)
     this.getImageForStationColor= this.getImageForStationColor.bind(this)
     this.getUserInformation = this.getUserInformation.bind(this)
-
+    this.getMobileOperatingSystem = this.getMobileOperatingSystem.bind(this)
     this.ref = null
     this.GMapApi = null
     this.stationsGroupedByColour = {}
@@ -113,24 +114,51 @@ class App extends Component {
 
         //device type data
 
+        var mobileOS = {
+          mobile_os:this.getMobileOperatingSystem()
+        }
+
         var deviceData = {
-          // mobile:md.mobile || "",
-          // phone:md.phone || "",
-          // tablet:md.tablet || "",
-          // agent: md.userAgent || "",
-          os: md.os() || "",
+          md_mobile:md.mobile() || "",
+          md_phone:md.phone() || "",
+          md_tablet:md.tablet() || "",
+          md_agent: md.userAgent() || "",
+          md_os: md.os() || "",
           is_iphone: md.is('iphone') || "",
           is_bot: md.is('bot') || "",
           screen_height: window.myScreenHeight || "",
           screen_width: window.myScreenWidth || "",
           browser_height: window.innerHeight || "",
-          browser_width: window.innerWidth || ""
-          
+          browser_width: window.innerWidth || "",
+          mobile_os:this.getMobileOperatingSystem()
         }
+
+        //deviceData.push(mobileOS)
 
         this.saveValues({device:deviceData})
 
 
+    }
+
+
+    getMobileOperatingSystem() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+          // Windows Phone must come first because its UA also contains "Android"
+        if (/windows phone/i.test(userAgent)) {
+            return "Windows Phone";
+        }
+    
+        if (/android/i.test(userAgent)) {
+            return "Android";
+        }
+    
+        // iOS detection from: http://stackoverflow.com/a/9039885/177710
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "iOS";
+        }
+    
+        return "unknown";
     }
 
   setBaseColor(color){
