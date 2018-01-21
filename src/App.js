@@ -45,7 +45,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      step:5,
+      step:1,
       currentComplaintType:null,
       selectedLine:null, GoogleMapsApi:null,
       stationsGroupedByColour: {},
