@@ -120,7 +120,7 @@ class FeedbackInput extends Component{
   $(".ripple").css({
     width: buttonWidth,
     height: buttonHeight,
-    top:e.clientY-120/* top: window.myScreenWidth/6*/ + 'px',
+    /*top:e.clientY-120*/ top: window.myScreenWidth/6 + 'px',
     left: x + 'px'
   }).addClass("rippleEffect");
 });
