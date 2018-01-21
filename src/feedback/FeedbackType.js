@@ -59,9 +59,10 @@ class FeedbackType extends Component{
                     renderItem=
                     {
                         (item, highlighted) =>
-                            <div key={item.id} style={{ backgroundColor: highlighted ? '#eee' : 'transparent'}}>
-                                {item.label}
+                            <div key={item.id} className="feedback-type-list-item">
+                                <h3>{item.label}</h3>
                             </div>
+                           
                     }
                     value={this.state.value}
                     onChange={e => this.setState({ value: e.target.value })}

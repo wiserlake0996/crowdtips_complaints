@@ -31,3 +31,16 @@
     opacity: 0;
   }
 }
+
+.feedback-type-list-item{
+    width: 100%;
+    background: wheat;
+    color: black;
+}
+
+.feedback-type-list-item:hover { 
+    background-color: black;
+    color: wheat;
+    
+}
+
