@@ -112,13 +112,15 @@ class FeedbackInput extends Component{
   // Get the center of the element
   var x = e.pageX - posX - buttonWidth / 2;
   var y = e.pageY - posY - buttonHeight / 2;
+
+  console.log("client",e.clientX)
   
  
   // Add the ripples CSS and start the animation
   $(".ripple").css({
     width: buttonWidth,
     height: buttonHeight,
-    top: window.myScreenWidth/6 + 'px',
+    top:e.clientY-120/* top: window.myScreenWidth/6*/ + 'px',
     left: x + 'px'
   }).addClass("rippleEffect");
 });
