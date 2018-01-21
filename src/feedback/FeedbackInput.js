@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import BubbleHearts from 'bubble-hearts'
 import './feedback.css'
+
+
+
+var $ = require("jquery");
 class FeedbackInput extends Component{
 
     constructor(props){
@@ -19,12 +23,14 @@ class FeedbackInput extends Component{
         this.saveAndContinue = this.saveAndContinue.bind(this)
         this.submitComplaint = this.submitComplaint.bind(this)
         this.setupFloatingImage = this.setupFloatingImage.bind(this)
+        this.ripples = this.ripples.bind(this)
 
         this.stage = new BubbleHearts()
     }
 
     componentDidMount(){
         this.setupFloatingImage()
+        this.ripples()
     }
 
     registerTap(e, data){
@@ -40,7 +46,7 @@ class FeedbackInput extends Component{
     };
     var rand = Math.floor(Math.random() * 3)
         image.src = this.assets[rand];
-    }
+     }
 
     saveAndContinue() {
         var out ={
@@ -78,8 +84,49 @@ class FeedbackInput extends Component{
         document.getElementById('valueprop').appendChild(canvas)
     }
 
+    ripples(){
+        
+        $("#emoji-canvas").click(function (e) {
+
+  
+  // Remove any old one
+  $(".ripple").remove();
+
+  // Setup
+  var posX = $(this).offset().left,
+      posY = $(this).offset().top,
+      buttonWidth = $(this).width(),
+      buttonHeight =  $(this).height();
+  
+  // Add the element
+  $(this).prepend("<span class='ripple'></span>");
+
+  
+ // Make it round!
+  if(buttonWidth >= buttonHeight) {
+    buttonHeight = buttonWidth;
+  } else {
+    buttonWidth = buttonHeight; 
+  }
+  
+  // Get the center of the element
+  var x = e.pageX - posX - buttonWidth / 2;
+  var y = e.pageY - posY - buttonHeight / 2;
+  
+ 
+  // Add the ripples CSS and start the animation
+  $(".ripple").css({
+    width: buttonWidth,
+    height: buttonHeight,
+    top: window.myScreenWidth/6 + 'px',
+    left: x + 'px'
+  }).addClass("rippleEffect");
+});
+    }
+
 
     render(){
+
         return(
             <div>
 
@@ -91,7 +138,7 @@ class FeedbackInput extends Component{
                     <h4> Which emoji best expresses how you feel? indicate severity by tapping any as much as you like </h4>
                 </div>
                 <div id="emoji-canvas">
-                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "happy"); }}><img style={{width:"16%", height:"60px"}} src="https://blameitonchocolate.files.wordpress.com/2017/04/happiness.png?w=100&h=100"/></a>
+                    <a className="emoji-icon dot pulse" href="" onClick={(e) => {this.registerTap(e, "happy"); }}><img style={{width:"16%", height:"60px"}} src="https://blameitonchocolate.files.wordpress.com/2017/04/happiness.png?w=100&h=100"/></a>
                     <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "angry")}><img style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/steamfromnose.png?w=100&h=100"/></a>
                     <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "sick")}><img style={{width:"16%", height:"60px"}}src="https://static1.squarespace.com/static/5237604ce4b0e51f969029ae/t/5a441740c830257df7d1f335/1514412147296/?format=100w"/></a>
                     <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "neutral")}><img style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/neutral.png?w=100&h=100"/></a>
