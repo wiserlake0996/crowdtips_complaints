@@ -24,6 +24,7 @@ class FeedbackInput extends Component{
         this.submitComplaint = this.submitComplaint.bind(this)
         this.setupFloatingImage = this.setupFloatingImage.bind(this)
         this.ripples = this.ripples.bind(this)
+        this.toggleImage = this.toggleImage.bind(this)
 
         this.stage = new BubbleHearts()
     }
@@ -33,7 +34,7 @@ class FeedbackInput extends Component{
         this.ripples()
     }
 
-    registerTap(e, data){
+    registerTap(e, data, imageId){
         e.preventDefault()
 
         if (data in this.emojiTaps){
@@ -45,14 +46,34 @@ class FeedbackInput extends Component{
 
             console.log("Count After: ",data ," " , this.emojiTaps[data].length)
         }
+
+        this.toggleImage(imageId)
+
         //console.log("Emoji taps", this.emojiTaps)
         let image = new Image;
         image.onload = () => {
-        this.stage.bubble(image);
-    };
-    var rand = Math.floor(Math.random() * 3)
+            this.stage.bubble(image);
+        };
+        var rand = Math.floor(Math.random() * 3)
         image.src = this.assets[rand];
+
      }
+
+     toggleImage(imageId){
+         var currentImageSrc = document.getElementById(imageId).src
+
+         var currImagePointer = document.getElementById(imageId)
+         var img2 = "https://cdn.shopify.com/s/files/1/1061/1924/files/Emoji_Icon_-_Smirk_face.png?11214052019865124406";
+
+         currImagePointer.src = img2
+
+         setTimeout(function() {
+            currImagePointer.src = currentImageSrc;
+         }, 100);
+
+     }
+
+
 
     saveAndContinue() {
         var out ={
@@ -90,46 +111,47 @@ class FeedbackInput extends Component{
         document.getElementById('valueprop').appendChild(canvas)
     }
 
+
+
     ripples(){
         
         $("#emoji-canvas").click(function (e) {
 
   
-  // Remove any old one
-  $(".ripple").remove();
+        // Remove any old one
+        $(".ripple").remove();
 
-  // Setup
-  var posX = $(this).offset().left,
-      posY = $(this).offset().top,
-      buttonWidth = $(this).width(),
-      buttonHeight =  $(this).height();
-  
-  // Add the element
-  $(this).prepend("<span class='ripple'></span>");
+        // Setup
+        var posX = $(this).offset().left,
+        posY = $(this).offset().top,
+        buttonWidth = $(this).width(),
+        buttonHeight =  $(this).height();
 
-  
- // Make it round!
-  if(buttonWidth >= buttonHeight) {
-    buttonHeight = buttonWidth;
-  } else {
-    buttonWidth = buttonHeight; 
-  }
-  
-  // Get the center of the element
-  var x = e.pageX - posX - buttonWidth / 2;
-  var y = e.pageY - posY - buttonHeight / 2;
+        // Add the element
+        $(this).prepend("<span class='ripple'></span>");
 
-  console.log("client",e.clientX)
-  
- 
-  // Add the ripples CSS and start the animation
-  $(".ripple").css({
-    width: buttonWidth,
-    height: buttonHeight,
-    /*top:e.clientY-120*/ top: window.myScreenWidth/6 + 'px',
-    left: x + 'px'
-  }).addClass("rippleEffect");
-});
+
+        // Make it round!
+        if(buttonWidth >= buttonHeight) {
+            buttonHeight = buttonWidth;
+            } else {
+            buttonWidth = buttonHeight; 
+        }
+
+        // Get the center of the element
+        var x = e.pageX - posX - buttonWidth / 2;
+        var y = e.pageY - posY - buttonHeight / 2;
+
+        console.log("client",e.clientX)
+
+        // Add the ripples CSS and start the animation
+            $(".ripple").css({
+                width: buttonWidth,
+                height: buttonHeight,
+                /*top:e.clientY-120*/ top: window.myScreenWidth/6 + 'px',
+                left: x + 'px'
+            }).addClass("rippleEffect");
+        });
     }
 
 
@@ -146,12 +168,12 @@ class FeedbackInput extends Component{
                     <h4> Which emoji best expresses how you feel? indicate severity by tapping any as much as you like </h4>
                 </div>
                 <div id="emoji-canvas">
-                    <a className="emoji-icon dot pulse" href="" onClick={(e) => {this.registerTap(e, "happy"); }}><img style={{width:"16%", height:"60px"}} src="https://blameitonchocolate.files.wordpress.com/2017/04/happiness.png?w=100&h=100"/></a>
-                    <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "angry")}><img style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/steamfromnose.png?w=100&h=100"/></a>
-                    <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "sick")}><img style={{width:"16%", height:"60px"}}src="https://static1.squarespace.com/static/5237604ce4b0e51f969029ae/t/5a441740c830257df7d1f335/1514412147296/?format=100w"/></a>
-                    <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "neutral")}><img style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/neutral.png?w=100&h=100"/></a>
-                    <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "fear")}><img style={{width:"16%", height:"60px"}}src="http://www.hey.fr/tools/emoji/ios_emoji_face_screaming_in_fear.png"/></a>
-                    <a className="emoji-icon" href="" onClick={(e) => this.registerTap(e, "thumbs_up")}><img style={{width:"16%", height:"60px"}}src="http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c4c4.png"/></a>
+                    <a className="emoji-icon dot pulse" href="" onClick={(e) => {this.registerTap(e, "happy", "img0"); }}><img id="img0" style={{width:"16%", height:"60px"}} src="https://blameitonchocolate.files.wordpress.com/2017/04/happiness.png?w=100&h=100"/></a>
+                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "angry", "img1")}}><img id="img1" style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/steamfromnose.png?w=100&h=100"/></a>
+                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "sick", "img2")}}><img id="img2" style={{width:"16%", height:"60px"}}src="https://static1.squarespace.com/static/5237604ce4b0e51f969029ae/t/5a441740c830257df7d1f335/1514412147296/?format=100w"/></a>
+                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "neutral", "img3")}}><img id="img3" style={{width:"16%", height:"60px"}}src="https://blameitonchocolate.files.wordpress.com/2017/04/neutral.png?w=100&h=100"/></a>
+                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "fear", "img4")}}><img id="img4" style={{width:"16%", height:"60px"}}src="http://www.hey.fr/tools/emoji/ios_emoji_face_screaming_in_fear.png"/></a>
+                    <a className="emoji-icon" href="" onClick={(e) => {this.registerTap(e, "thumbs_up", "img5")}}><img id="img5" style={{width:"16%", height:"60px"}}src="http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c4c4.png"/></a>
                 
                 </div>
                 
