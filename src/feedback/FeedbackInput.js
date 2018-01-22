@@ -11,12 +11,12 @@ class FeedbackInput extends Component{
         super(props)
 
         this.emojiTaps = {
-            happy:0,
-            angry:0,
-            sick:0,
-            neutral:0,
-            fear:0,
-            thumbs_up:0
+            happy:[],
+            angry:[],
+            sick:[],
+            neutral:[],
+            fear:[],
+            thumbs_up:[]
         }
 
         this.registerTap = this.registerTap.bind(this)
@@ -37,9 +37,15 @@ class FeedbackInput extends Component{
         e.preventDefault()
 
         if (data in this.emojiTaps){
-            this.emojiTaps[data] = this.emojiTaps[data] + 1
+            console.log("Count before: ", data, " ", this.emojiTaps[data].length)
+
+            this.emojiTaps[data].push({
+                timestamp: Date.now()
+            })
+
+            console.log("Count After: ",data ," " , this.emojiTaps[data].length)
         }
-        console.log("Emoji taps", this.emojiTaps)
+        //console.log("Emoji taps", this.emojiTaps)
         let image = new Image;
         image.onload = () => {
         this.stage.bubble(image);
