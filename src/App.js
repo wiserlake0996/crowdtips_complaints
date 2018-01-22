@@ -18,6 +18,7 @@ import OtherComplaintBox from './select_complaint/OtherComplaint';
 import FeedbackType from './feedback/FeedbackType'
 import FeedbackInput from './feedback/FeedbackInput'
 import FeedbackDataPoints from './feedback/FeedBackDataPoints'
+import FeedbackGif from './feedback/FeedbackGif'
 
 var $ = require("jquery");
 var firebase = require('firebase')
@@ -26,11 +27,6 @@ var MobileDetect = require('mobile-detect'),
     md = new MobileDetect(window.navigator.userAgent);
     var keys = ["iPad", "NexusTablet", "SamsungTablet", "Kindle", "SurfaceTablet", "HPTablet", "AsusTablet", "BlackBerryTablet", "HTCtablet", "MotorolaTablet", "NookTablet", "AcerTablet", "ToshibaTablet", "LGTablet", "FujitsuTablet", "PrestigioTablet", "LenovoTablet", "YarvikTablet", "MedionTablet", "ArnovaTablet", "IntensoTablet", "IRUTablet", "MegafonTablet", "EbodaTablet", "AllViewTablet", "ArchosTablet", "AinolTablet", "SonyTablet", "CubeTablet", "CobyTablet", "MIDTablet", "SMiTTablet", "RockChipTablet", "FlyTablet", "bqTablet", "HuaweiTablet", "NecTablet", "PantechTablet", "BronchoTablet", "VersusTablet", "ZyncTablet", "PositivoTablet", "NabiTablet", "KoboTablet", "DanewTablet", "TexetTablet", "PlaystationTablet", "TrekstorTablet", "PyleAudioTablet", "AdvanTablet", "DanyTechTablet", "GalapadTablet", "MicromaxTablet", "KarbonnTablet", "AllFineTablet", "PROSCANTablet", "YONESTablet", "ChangJiaTablet", "GUTablet", "PointOfViewTablet", "OvermaxTablet", "HCLTablet", "DPSTablet", "VistureTablet", "CrestaTablet", "MediatekTablet", "ConcordeTablet", "GoCleverTablet", "ModecomTablet", "VoninoTablet", "ECSTablet", "StorexTablet", "VodafoneTablet", "EssentielBTablet", "RossMoorTablet", "iMobileTablet", "TolinoTablet", "AudioSonicTablet", "AMPETablet", "SkkTablet", "TecnoTablet", "JXDTablet", "iJoyTablet", "Hudl", "TelstraTablet", "GenericTablet", "iPhone", "BlackBerry", "HTC", "Nexus", "Dell", "Motorola", "Samsung", "LG", "Sony", "Asus", "Micromax", "Palm", "Vertu", "Pantech", "Fly", "iMobile", "SimValley", "GenericPhone", "AndroidOS", "BlackBerryOS", "PalmOS", "SymbianOS", "WindowsMobileOS", "WindowsPhoneOS", "iOS", "MeeGoOS", "MaemoOS", "JavaOS", "webOS", "badaOS", "BREWOS", "Chrome", "Dolfin", "Opera", "Skyfire", "IE", "Firefox", "Bolt", "TeaShark", "Blazer", "Safari", "Tizen", "UCBrowser", "DiigoBrowser", "Puffin", "Mercury", "GenericBrowser", "DesktopMode", "TV", "WebKit", "Bot", "MobileBot", "Console", "Watch"];
     var versionKeys = ["Mobile", "Build", "Version", "VendorID", "iPad", "iPhone", "iPod", "Kindle", "Chrome", "Coast", "Dolfin", "Firefox", "Fennec", "IE", "NetFront", "NokiaBrowser", "Opera", "Opera Mini", "Opera Mobi", "UC Browser", "MQQBrowser", "MicroMessenger", "Safari", "Skyfire", "Tizen", "Webkit", "Gecko", "Trident", "Presto", "iOS", "Android", "BlackBerry", "BREW", "Java", "Windows Phone OS", "Windows Phone", "Windows CE", "Windows NT", "Symbian", "webOS"];
-
-
-
-
-
 
 
 var fieldValues = {
@@ -46,7 +42,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      step:5,
+      step:1,
       currentComplaintType:null,
       selectedLine:null, GoogleMapsApi:null,
       stationsGroupedByColour: {},
@@ -693,7 +689,7 @@ class App extends Component {
         return (
           <OtherComplaintBox resetData = {this.resetAll} baseColor={this.state.baseColor} submitData={this.submitData} openStep={this.openStep}key="step6" fieldValues={fieldValues}nextStep={this.nextStep}saveValues={this.saveValues}/>  
       )
-      case 7:
+      case 8:
 
         return(
           <div id="contactForm" key="step7">
@@ -721,12 +717,21 @@ class App extends Component {
 
           </div>
       )
+
+      case 7:
+        return(
+          <FeedbackGif setTheme={this.setBaseColor} key="step8" openStep={this.openStep} updateLineSelection={this.updateLineSelection} currStep ={this.state.step} fieldValues={fieldValues}
+          nextStep={this.nextStep}
+          saveValues={this.saveValues} submitData={this.submitData} >
+
+          </FeedbackGif>
+        )
     }
   }
 
   render() {
 
-    var progress = this.state.step / 7 * 100
+    var progress = this.state.step / 8 * 100
   
     return(
       <div id="page-container">

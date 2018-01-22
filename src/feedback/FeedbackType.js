@@ -20,7 +20,7 @@ class FeedbackType extends Component{
     
         console.log(data)
         var out ={
-            feedbackType: data
+            feedback_type: data
         }
         this.props.setFeedbackType(data)
         this.props.saveValues(out)
@@ -50,7 +50,7 @@ class FeedbackType extends Component{
                     items=
                     {
                         [
-                            { id: 'foo', label: 'Commendation' },
+                            { id: 'foo', label: 'Compliment' },
                             { id: 'bar', label: 'Complaint' },
                         ]
                     }
@@ -74,16 +74,6 @@ class FeedbackType extends Component{
                         }
                     }
                 />
-      
-{/* 
-                <div id="complaints">
-                    <div className="hatepoint" style={bgColor} onClick={(e) => this.saveAndContinue(e, "commendation")}>
-                        <h3> Commend </h3>
-                    </div>               
-                    <div className="hatepoint" style={bgColor} onClick={(e) => this.saveAndContinue(e, "complaint")}>
-                        <h3> Complain about</h3>
-                    </div> 
-                </div>          */}
 
                 <div id="complain">  
                     <h1  style={{textAlign:"center", marginTop:"140px"}}> About The MTA Subway! </h1>
