@@ -81,6 +81,8 @@ ul{
   margin: 5px; 
   display: block;
   float: left;
+  opacity: .75;
+
   
   
 }

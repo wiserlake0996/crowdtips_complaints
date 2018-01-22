@@ -42,11 +42,15 @@ class FeedbackDataPoints extends Component{
 
             if(item.value == "other"){
                 return(
-                    <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndShowOtherPage(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
+                    <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndShowOtherPage(e, item.value)} className="hatepoint">
+                        <h3>{camelCase}</h3>
+                    </div>
                 )
             }
             return(
-                <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndContinue(e, item.value)} className="hatepoint"><h3>{camelCase}</h3></div>
+                <div key = {item.value} style={bgColor} onClick={(e) => this.saveAndContinue(e, item.value)} className="hatepoint">
+                    <h3>{camelCase}</h3>
+                </div>
             )
         }.bind(this))
 

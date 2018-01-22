@@ -79,6 +79,7 @@ class App extends Component {
     this.getImageForStationColor= this.getImageForStationColor.bind(this)
     this.getUserInformation = this.getUserInformation.bind(this)
     this.getMobileOperatingSystem = this.getMobileOperatingSystem.bind(this)
+    this.arrayContains = this.arrayContains.bind(this)
     this.ref = null
     this.GMapApi = null
     this.stationsGroupedByColour = {}
@@ -219,7 +220,10 @@ class App extends Component {
 
 
   }
-
+  arrayContains(needle, arrhaystack)
+  {
+      return (arrhaystack.indexOf(needle) > -1);
+  }
   loadAndGroupStationsByColour(){
     var stationColors = {
       blue:[],
@@ -231,7 +235,8 @@ class App extends Component {
       yellow:[],
       red:[],
       green:[],
-      purple:[]
+      purple:[],
+      another_blue:[]
     }
 
     var data = require('./data/subway-stations.json')
@@ -242,30 +247,30 @@ class App extends Component {
       var lineSplit = line.split("-")
 
       if(/^[a-zA-Z]+$/.test(lineSplit[0])){
-        if(lineSplit[0] == "A" || lineSplit[0] == "C" || lineSplit[0] == "E"){
+        if(this.arrayContains("A", lineSplit) || this.arrayContains("C", lineSplit) || this.arrayContains("E", lineSplit)){
           stationColors["blue"].push(stationData[i])
-        }else if(lineSplit[0] == "B" || lineSplit[0] == "D" || lineSplit[0] == "F" || lineSplit[0] == "M"){
-          stationColors["orange"].push(stationData[i])
-        }else if(lineSplit[0] == "S"){
+        }if(this.arrayContains("B", lineSplit) || this.arrayContains("F", lineSplit) || this.arrayContains("D", lineSplit) || this.arrayContains("D", lineSplit)){
+            stationColors["orange"].push(stationData[i])
+        }if(this.arrayContains("S", lineSplit)){
           stationColors["dark_gray"].push(stationData[i])
-        }else if(lineSplit[0] == "N" || lineSplit[0] == "Q" || lineSplit[0] == "R" || lineSplit[0] == "W"){
+        }if(this.arrayContains("N", lineSplit) || this.arrayContains("Q", lineSplit) || this.arrayContains("R", lineSplit) || this.arrayContains("W", lineSplit)){
           stationColors["yellow"].push(stationData[i])
-        }else if(lineSplit[0] == "L" ){
+        }if(this.arrayContains("L", lineSplit) ){
           stationColors["light_gray"].push(stationData[i])
-        }else if(lineSplit[0] == "J" || lineSplit[0] == "Z"){
+        }if(this.arrayContains("J", lineSplit) || this.arrayContains("Z", lineSplit) ){
           stationColors["brown"].push(stationData[i])
-        }else if(lineSplit[0] == "G"){
+        }if(this.arrayContains("G", lineSplit)){
           stationColors["light_green"].push(stationData[i])
         }else{
           stationColors["another_blue"].push(stationData[i])
 
         }
       }else{
-        if(lineSplit[0] == 1 || lineSplit[0] == 2 || lineSplit[0] == 3){
+        if(this.arrayContains("1", lineSplit) || this.arrayContains("2", lineSplit) || this.arrayContains("3", lineSplit)){
           stationColors["red"].push(stationData[i])
-        }else if(lineSplit[0] == 4 || lineSplit[0] == 5 || lineSplit[0] == 6 ){
-          stationColors["green"].push(stationData[i])
-        }else if(lineSplit[0] == 7){
+        } if(this.arrayContains("4", lineSplit) || this.arrayContains("5", lineSplit) || this.arrayContains("6", lineSplit)){
+                  stationColors["green"].push(stationData[i])
+        }if(this.arrayContains("7", lineSplit) ){
           stationColors["purple"].push(stationData[i])
         }
       }
@@ -527,36 +532,36 @@ class App extends Component {
   }
 
 
-  updateSelectedStation(stationData){
+  updateSelectedStation(stationData, color){
     var line = stationData["properties"]["line"]
     var lineSplit = line.split("-")
 
     if(/^[a-zA-Z]+$/.test(lineSplit[0])){
-      if(lineSplit[0] == "A" || lineSplit[0] == "C" || lineSplit[0] == "E"){
-        this.loadSpecificStationToMap(stationData, "blue")
-      }else if(lineSplit[0] == "B" || lineSplit[0] == "D" || lineSplit[0] == "F" || lineSplit[0] == "M"){
-        this.loadSpecificStationToMap(stationData, "orange")
-      }else if(lineSplit[0] == "S"){
-        this.loadSpecificStationToMap(stationData, "darkgray")
-      }else if(lineSplit[0] == "N" || lineSplit[0] == "Q" || lineSplit[0] == "R" || lineSplit[0] == "W"){
-        this.loadSpecificStationToMap(stationData, "yellow")
-      }else if(lineSplit[0] == "L" ){
-        this.loadSpecificStationToMap(stationData, "lightgray")
-      }else if(lineSplit[0] == "J" || lineSplit[0] == "Z"){
-        this.loadSpecificStationToMap(stationData, "brown")
-      }else if(lineSplit[0] == "G"){
-        this.loadSpecificStationToMap(stationData, "lightgreen")
+      if(this.arrayContains("A", lineSplit) || this.arrayContains("C", lineSplit) || this.arrayContains("E", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("B", lineSplit) || this.arrayContains("F", lineSplit) || this.arrayContains("D", lineSplit) || this.arrayContains("D", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("S", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      } else if(this.arrayContains("N", lineSplit) || this.arrayContains("Q", lineSplit) || this.arrayContains("R", lineSplit) || this.arrayContains("W", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("L", lineSplit) ){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("J", lineSplit) || this.arrayContains("Z", lineSplit) ){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("G", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
       }else{
-        this.loadSpecificStationToMap(stationData, "anotherblue")
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
         
       }
     }else{
-      if(lineSplit[0] == 1 || lineSplit[0] == 2 || lineSplit[0] == 3){
-        this.loadSpecificStationToMap(stationData, "red")
-      }else if(lineSplit[0] == 4 || lineSplit[0] == 5 || lineSplit[0] == 6 ){
-        this.loadSpecificStationToMap(stationData, "green")
-      }else if(lineSplit[0] == 7){
-        this.loadSpecificStationToMap(stationData, "purple")
+      if(this.arrayContains("1", lineSplit) || this.arrayContains("2", lineSplit) || this.arrayContains("3", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("4", lineSplit) || this.arrayContains("5", lineSplit) || this.arrayContains("6", lineSplit)){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
+      }else if(this.arrayContains("7", lineSplit) ){
+        this.loadSpecificStationToMap(stationData, this.state.baseColor)
       }
     }
   }

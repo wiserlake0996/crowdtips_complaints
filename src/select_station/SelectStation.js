@@ -116,12 +116,27 @@ class SelectStation extends Component {
 
 class List extends Component {
 
+    constructor(){
+        super()
+        this.guid = this.guid.bind(this)
+    }
+
+    guid() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+          s4() + '-' + s4() + s4() + s4();
+      }
+
     render(){
         return(
             <ul>
             {
               this.props.items.map(function(item) {
-                return <li style={this.props.bgStyle} onClick={(e) => this.props.saveData(e, item.properties.name, item)} key={item.properties.name}>{item.properties.name}</li>
+                return <li style={this.props.bgStyle} onClick={(e) => this.props.saveData(e, item.properties.name, item)} key={this.guid()}>{item.properties.name}</li>
               }.bind(this))
              }
             </ul>
