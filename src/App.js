@@ -59,7 +59,7 @@ class App extends Component {
     this.setFeedbackType = this.setFeedbackType.bind(this)
     this.submitData = this.submitData.bind(this)
     this.updateLineSelection = this.updateLineSelection.bind(this)
-    this.initFirebase = this.initFirebase.bind(this)
+    //this.initFirebase = this.initFirebase.bind(this)
     this.writeData = this.writeData.bind(this)
     this.loadMap = this.loadMap.bind(this)
     this.loadAndGroupStationsByColour = this.loadAndGroupStationsByColour.bind(this)
@@ -191,18 +191,6 @@ class App extends Component {
   populateMapWithAllStations(){
 
     this.clearMapContents()
-
-    // this.loadStationToMapByColor("red")
-    // this.loadStationToMapByColor("brown")
-    // this.loadStationToMapByColor("green")
-    // this.loadStationToMapByColor("light_gray")
-    // this.loadStationToMapByColor("dark_gray")
-    // this.loadStationToMapByColor("blue")
-    // this.loadStationToMapByColor("yellow")
-    // this.loadStationToMapByColor("light_green")
-    // this.loadStationToMapByColor("green")
-
-    // this.loadStationToMapByColor("purple")
 
     var keys = Object.keys(this.state.stationsGroupedByColour)
     var count = 0
@@ -403,24 +391,6 @@ class App extends Component {
     var myLatlng = {lat:40.748817, lng:-73.985428};
 
     this.map.panTo(myLatlng)
-  }
-
-
-  initFirebase(){
-
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyBW0xY7OLHXBIWa3c5iHa2-7JP9kngBwCc",
-        authDomain: "complaints-mta.firebaseapp.com",
-        databaseURL: "https://complaints-mta.firebaseio.com",
-        projectId: "complaints-mta",
-        storageBucket: "",
-        messagingSenderId: "772383984934"
-    };
-    firebase.initializeApp(config);
-    this.ref = firebase.database().ref('complaints')
-
-   // this.ref.onDisconnect()
   }
 
   writeData(data){
@@ -711,23 +681,15 @@ class App extends Component {
             <small className="contact-form-description">Connect with us on social media </small>
             <Follow username="crowdtips_xyz" options={{size:"large"}}/>
             <Mention username="crowdtips_xyz" options={{size:"large"}}/>
-                    <a href="https://instagram.com/crowdtips">
-
+            <a href="https://instagram.com/crowdtips">
               <img src="http://www.thesiteshed.com/wp-content/uploads/2016/02/Follow-us-on-Instagram.png" width="100" height="40" className="shares-instagram"/>
-
-              </a>
+            </a>
 
             <form action="#">
-              {/*<input ref="userName" id="contact-input" placeholder="Name" type="text" required />
-              <input ref = "userEmail"id="contact-input" placeholder="Email" type="email" required />*/}
-                <textarea placeholder="Any suggestions on how to improve the site.."rows="10" id="complaint-text-area" ref="text"></textarea>
-
+              <textarea placeholder="Any suggestions on how to improve the site.."rows="10" id="complaint-text-area" ref="text"></textarea>
               <button onClick={this.writeUserData}className="formBtn" >Submit </button>
               <button onClick={this.resetAll} style={{backgroundColor:'red'}}id="formBtn">Cancel</button>
             </form>
-
-            {/*<a href="https://twitter.com/crowdtips_xyz?ref_src=twsrc%5Etfw" className="twitter-follow-button" data-show-count="false">Follow @crowdtips_xyz</a>*/}
-
           </div>
       )
 
