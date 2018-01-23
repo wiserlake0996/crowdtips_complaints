@@ -19,6 +19,7 @@ import FeedbackType from './feedback/FeedbackType'
 import FeedbackInput from './feedback/FeedbackInput'
 import FeedbackDataPoints from './feedback/FeedBackDataPoints'
 import FeedbackGif from './feedback/FeedbackGif'
+import DataOperations from './controllers/DataOperations'
 
 var $ = require("jquery");
 var firebase = require('firebase')
@@ -85,7 +86,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.initFirebase()
+    //this.initFirebase()
     this.getUserInformation()
     
     this.loadMap()
@@ -423,11 +424,17 @@ class App extends Component {
   }
 
   writeData(data){
-    var newPostKey = firebase.database().ref().child('complaints').push().key;
+    var newPostKey = DataOperations.getSessionKey()//firebase.database().ref().child('complaints').push().key;
     this.complaintKey = newPostKey;
     var updates = {};
-    updates['/complaints/' + newPostKey] = data;
+
+    var completionTime = DataOperations.getFirebaseTimestamp()
+    
+    updates['/complaints/' + newPostKey + '/user_input/'] = data;
+    updates['/complaints/' + newPostKey + '/time_on_site/completed'] = completionTime;
+
     firebase.database().ref().update(updates);
+    
    // alert("Submission Received! Thank you")
   }
 
@@ -451,22 +458,27 @@ class App extends Component {
 
   resetAll(){
 
-    /// RESET FIELD VALUES
-    fieldValues = {
-      station_name     : null,
-      subway_line    : null,
-      complaints : [],
-      timestamp      : null,
-    }
+    console.log("calling reload")
+    window.parent.location.reload()
 
-    //RESET STATES
-    this.setState({
-      //step:1,
-      currentComplaintType:null,
-      selectedLine:null
-    })
-    this.openStep(1)
-    this.populateMapWithAllStations()
+    // /// RESET FIELD VALUES
+    // fieldValues = {
+    //   station_name     : null,
+    //   subway_line    : null,
+    //   complaints : [],
+    //   timestamp      : null,
+    // }
+
+    // //RESET STATES
+    // this.setState({
+    //   //step:1,
+    //   currentComplaintType:null,
+    //   selectedLine:null
+    // })
+    // this.openStep(1)
+    // this.populateMapWithAllStations()
+
+    //DataOperations.generateSessionKey()
   }
 
   setFeedbackType(data){
@@ -488,6 +500,7 @@ class App extends Component {
       console.log(fieldValues)
 
     }()
+
   }
   
   nextStep() {

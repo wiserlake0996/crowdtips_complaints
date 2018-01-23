@@ -20,11 +20,9 @@ class FeedbackGif extends Component{
         this.loadAppropriateImage()
     }
 
-
     getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
-
 
     loadAppropriateImage(){
         var tp = this.props.fieldValues['feedback_type']
@@ -55,8 +53,6 @@ class FeedbackGif extends Component{
             console.log("ERROR: ", err)
         })
     }
-
-
 
     saveAndContinue(e, data){
         e.preventDefault()
@@ -96,6 +92,5 @@ class FeedbackGif extends Component{
         )
     }
 }
-
 
 export default FeedbackGif;
