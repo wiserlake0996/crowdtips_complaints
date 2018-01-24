@@ -2,13 +2,10 @@
 
 import React, { Component } from 'react';
 import { Follow, Mention } from 'react-twitter-widgets'
-//import Icon, {Telegram, Instagram} from 'react-share-icons';
-//import Instagram from 'react-share-icons/lib/Instagram';
 import { Line, Circle } from 'rc-progress';
 
 import logo from './logo.svg';
 import './App.css';
-
 
 import SelectStation from './select_station/SelectStation'
 import SelectLine from './select_line/SelectLine'
@@ -26,8 +23,6 @@ var firebase = require('firebase')
 
 var MobileDetect = require('mobile-detect'),
     md = new MobileDetect(window.navigator.userAgent);
-    var keys = ["iPad", "NexusTablet", "SamsungTablet", "Kindle", "SurfaceTablet", "HPTablet", "AsusTablet", "BlackBerryTablet", "HTCtablet", "MotorolaTablet", "NookTablet", "AcerTablet", "ToshibaTablet", "LGTablet", "FujitsuTablet", "PrestigioTablet", "LenovoTablet", "YarvikTablet", "MedionTablet", "ArnovaTablet", "IntensoTablet", "IRUTablet", "MegafonTablet", "EbodaTablet", "AllViewTablet", "ArchosTablet", "AinolTablet", "SonyTablet", "CubeTablet", "CobyTablet", "MIDTablet", "SMiTTablet", "RockChipTablet", "FlyTablet", "bqTablet", "HuaweiTablet", "NecTablet", "PantechTablet", "BronchoTablet", "VersusTablet", "ZyncTablet", "PositivoTablet", "NabiTablet", "KoboTablet", "DanewTablet", "TexetTablet", "PlaystationTablet", "TrekstorTablet", "PyleAudioTablet", "AdvanTablet", "DanyTechTablet", "GalapadTablet", "MicromaxTablet", "KarbonnTablet", "AllFineTablet", "PROSCANTablet", "YONESTablet", "ChangJiaTablet", "GUTablet", "PointOfViewTablet", "OvermaxTablet", "HCLTablet", "DPSTablet", "VistureTablet", "CrestaTablet", "MediatekTablet", "ConcordeTablet", "GoCleverTablet", "ModecomTablet", "VoninoTablet", "ECSTablet", "StorexTablet", "VodafoneTablet", "EssentielBTablet", "RossMoorTablet", "iMobileTablet", "TolinoTablet", "AudioSonicTablet", "AMPETablet", "SkkTablet", "TecnoTablet", "JXDTablet", "iJoyTablet", "Hudl", "TelstraTablet", "GenericTablet", "iPhone", "BlackBerry", "HTC", "Nexus", "Dell", "Motorola", "Samsung", "LG", "Sony", "Asus", "Micromax", "Palm", "Vertu", "Pantech", "Fly", "iMobile", "SimValley", "GenericPhone", "AndroidOS", "BlackBerryOS", "PalmOS", "SymbianOS", "WindowsMobileOS", "WindowsPhoneOS", "iOS", "MeeGoOS", "MaemoOS", "JavaOS", "webOS", "badaOS", "BREWOS", "Chrome", "Dolfin", "Opera", "Skyfire", "IE", "Firefox", "Bolt", "TeaShark", "Blazer", "Safari", "Tizen", "UCBrowser", "DiigoBrowser", "Puffin", "Mercury", "GenericBrowser", "DesktopMode", "TV", "WebKit", "Bot", "MobileBot", "Console", "Watch"];
-    var versionKeys = ["Mobile", "Build", "Version", "VendorID", "iPad", "iPhone", "iPod", "Kindle", "Chrome", "Coast", "Dolfin", "Firefox", "Fennec", "IE", "NetFront", "NokiaBrowser", "Opera", "Opera Mini", "Opera Mobi", "UC Browser", "MQQBrowser", "MicroMessenger", "Safari", "Skyfire", "Tizen", "Webkit", "Gecko", "Trident", "Presto", "iOS", "Android", "BlackBerry", "BREW", "Java", "Windows Phone OS", "Windows Phone", "Windows CE", "Windows NT", "Symbian", "webOS"];
 
 
 var fieldValues = {
@@ -92,7 +87,7 @@ class App extends Component {
     this.loadMap()
   }
 
-    getUserInformation(){
+  getUserInformation(){
 
       //location and Ip address
         $.getJSON('https://api.ipify.org?format=json', function(data){
@@ -131,15 +126,12 @@ class App extends Component {
           mobile_os:this.getMobileOperatingSystem()
         }
 
-        //deviceData.push(mobileOS)
-
         this.saveValues({device:deviceData})
 
+  }
 
-    }
 
-
-    getMobileOperatingSystem() {
+  getMobileOperatingSystem() {
       var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     
           // Windows Phone must come first because its UA also contains "Android"
@@ -157,7 +149,7 @@ class App extends Component {
         }
     
         return "unknown";
-    }
+  }
 
   setBaseColor(color){
     this.setState({baseColor:color})
@@ -430,25 +422,6 @@ class App extends Component {
 
     console.log("calling reload")
     window.parent.location.reload()
-
-    // /// RESET FIELD VALUES
-    // fieldValues = {
-    //   station_name     : null,
-    //   subway_line    : null,
-    //   complaints : [],
-    //   timestamp      : null,
-    // }
-
-    // //RESET STATES
-    // this.setState({
-    //   //step:1,
-    //   currentComplaintType:null,
-    //   selectedLine:null
-    // })
-    // this.openStep(1)
-    // this.populateMapWithAllStations()
-
-    //DataOperations.generateSessionKey()
   }
 
   setFeedbackType(data){

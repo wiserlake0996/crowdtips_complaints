@@ -48,7 +48,7 @@ class DataOperations{
             disconnected:firebase.database.ServerValue.TIMESTAMP
         });
 
-        this.getUserInformation(key)
+        this.getUserInformation()
     }
 
     getSessionKey(){
@@ -107,7 +107,6 @@ class DataOperations{
         updateRef.update(updates)
 
     }
-  
   
     getMobileOperatingSystem() {
         var userAgent = navigator.userAgent || navigator.vendor || window.opera;
