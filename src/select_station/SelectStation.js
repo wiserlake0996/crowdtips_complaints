@@ -100,9 +100,7 @@ class SelectStation extends Component {
             
                 <div id="header"><h1>MTA Feedback</h1></div>
                 <div id="train"><h1>Select a train station</h1></div>  
-                {/* <span className="progress-step">Step {this.props.currStep}</span>
-                <progress className="progress" style={style}></progress> */}
-                {/* <button onClick={this.props.goBack}>back</button> */}
+
                 <div id="trainlines">
                     <div className="filter-list">
                     <input type="text" placeholder="Search" onChange={this.filterList}/>

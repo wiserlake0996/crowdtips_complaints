@@ -59,11 +59,9 @@ class FeedbackGif extends Component{
         var out ={
             gif_verdict: data
         }
-
+        
         this.props.saveValues(out)
         this.props.openStep(8)
-
-        //Add data to firebase
     }
 
     render(){
