@@ -70,12 +70,12 @@ class FeedbackGif extends Component{
             <div>
 
                 <div id="header">
-                    <h1> Does this Gif represent how you feel? </h1>
+                    <h1> Is this accurate about the MTA?</h1>
                 </div>
 
-                <div id="valueprop">
+                {/* <div id="valueprop">
                     <h4> Totally Optional by the way.. </h4>
-                </div>
+                </div> */}
 
                 <div id="gif-canvas">
                     <img id="gif-image" src = "" width="90%" height="90%"/> 
