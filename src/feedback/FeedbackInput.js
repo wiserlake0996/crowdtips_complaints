@@ -28,7 +28,7 @@ class FeedbackInput extends Component{
     }
 
     componentDidMount(){
-        this.setupFloatingImage()
+       // this.setupFloatingImage()
         this.ripples()
     }
 
@@ -47,12 +47,12 @@ class FeedbackInput extends Component{
 
         this.toggleImage(imageId)
 
-        let image = new Image;
-        image.onload = () => {
-            this.stage.bubble(image);
-        };
-        var rand = Math.floor(Math.random() * 3)
-        image.src = this.assets[rand];
+        // let image = new Image;
+        // image.onload = () => {
+        //     this.stage.bubble(image);
+        // };
+        // var rand = Math.floor(Math.random() * 3)
+        // image.src = this.assets[rand];
 
     }
 

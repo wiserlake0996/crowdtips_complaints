@@ -46,7 +46,7 @@ class FeedbackType extends Component{
                     <h1 style={{textAlign:"center"}}> I have a </h1>
                 </div>
 
-                <ReactAutocomplete
+                <ReactAutocomplete 
                     items=
                     {
                         [
@@ -73,6 +73,10 @@ class FeedbackType extends Component{
                             this.saveAndContinue(null, value)
                         }
                     }
+                    wrapperStyle={{
+                        display:'block'
+                      }}
+
                 />
 
                 <div id="complain">  
