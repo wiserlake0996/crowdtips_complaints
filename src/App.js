@@ -269,7 +269,6 @@ class App extends Component {
   getImageForStationColor(stationColor){
     var imageUrl = process.env.PUBLIC_URL+'/station_icons/'
 
-    console.log(stationColor)
     if(stationColor == "red"){
       imageUrl = imageUrl+"red.png"
     }
@@ -309,7 +308,6 @@ class App extends Component {
   }
   loadStationToMapByColor(stationColor){
 
-    //await(2000)
     var markers = []
     var MapApi = this.GoogleApi
     var col = stationColor
@@ -327,11 +325,7 @@ class App extends Component {
     }
 
     var imageUrl = this.getImageForStationColor(col)
-    console.log("")
     var data = this.stationsGroupedByColour[col]
-
-    console.log("Value of data:  ", data)
-
 
     var image = {
       url: imageUrl,
@@ -351,15 +345,10 @@ class App extends Component {
     var infowindow = new MapApi.InfoWindow();
     var marker, i;
 
-    //var data = this.state.stationsGroupedByColour[stationColor]
-
     for (i = 0; i < data.length; i++) {
       var station = data[i]
 
       var lines = station["properties"]["line"].split("-");
-      console.log("selected line: ", fieldValues['subway_line'])
-
-      console.log("Avalable Lines: ", lines)
       if(this.arrayContains(fieldValues['subway_line'], lines)){
         var name = station["properties"]["name"]  
         marker = new MapApi.Marker({
