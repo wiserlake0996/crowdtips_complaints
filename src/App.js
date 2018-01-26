@@ -269,38 +269,39 @@ class App extends Component {
   getImageForStationColor(stationColor){
     var imageUrl = process.env.PUBLIC_URL+'/station_icons/'
 
+    console.log(stationColor)
     if(stationColor == "red"){
       imageUrl = imageUrl+"red.png"
     }
-    if(stationColor == "blue"){
+    else if(stationColor == "blue"){
       imageUrl = imageUrl+"blue.png"
     }
-    if(stationColor == "green"){
+    else if(stationColor == "green"){
       imageUrl = imageUrl+"green.png"
     }
-    if(stationColor == "light_green"){
+    else if(stationColor == "light_green" || stationColor == "aquamarine"){
       imageUrl = imageUrl+"lightgreen.png"
     }
-    if(stationColor == "yellow"){
+    else if(stationColor == "yellow"){
       imageUrl = imageUrl+"yellow.png"
     }
-    if(stationColor == "brown"){
+    else if(stationColor == "brown"){
       imageUrl = imageUrl+"brown.png"
     }
-    if(stationColor == "purple"){
+    else if(stationColor == "purple"){
       imageUrl = imageUrl+"purple.png"
     }
-    if(stationColor == "orange"){
+    else if(stationColor == "orange"){
       imageUrl = imageUrl+"orange.png"
     }
-    if(stationColor == "light_gray"){
+    else if(stationColor == "light_gray"){
       imageUrl = imageUrl+"lightgray.png"
     }
-    if(stationColor == "dark_gray"){
+    else if(stationColor == "dark_gray"){
       imageUrl = imageUrl+"darkgray.png"
     }
 
-    if(stationColor == "another_blue"){
+    else if(stationColor == "another_blue"){
       imageUrl = imageUrl+"anotherblue.png"
     }
 
@@ -311,11 +312,26 @@ class App extends Component {
     //await(2000)
     var markers = []
     var MapApi = this.GoogleApi
+    var col = stationColor
    
     var map = this.map
 
-    var imageUrl = this.getImageForStationColor(stationColor)
-    var data = this.state.stationsGroupedByColour[stationColor]
+    if (stationColor == "lightgreen"){
+      col = "light_green"
+    }
+    if (stationColor == "lightgray"){
+      col = "light_gray"
+    }
+    if (stationColor == "darkgray"){
+      col = "dark_gray"
+    }
+
+    var imageUrl = this.getImageForStationColor(col)
+    console.log("")
+    var data = this.stationsGroupedByColour[col]
+
+    console.log("Value of data:  ", data)
+
 
     var image = {
       url: imageUrl,
@@ -335,38 +351,47 @@ class App extends Component {
     var infowindow = new MapApi.InfoWindow();
     var marker, i;
 
-    var data = this.state.stationsGroupedByColour[stationColor]
+    //var data = this.state.stationsGroupedByColour[stationColor]
 
     for (i = 0; i < data.length; i++) {
       var station = data[i]
-      var name = station["properties"]["name"]  
-      marker = new MapApi.Marker({
-        position: new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0]),
-        map: map,
-        icon:image
-      });
 
-      this.stationMarkers.push({
-        name:name,
-        line:station["properties"]["line"],
-        marker: marker
-      })
+      var lines = station["properties"]["line"].split("-");
+      console.log("selected line: ", fieldValues['subway_line'])
 
-      MapApi.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-            var content = "<div>"+
-                        "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
-                        "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
-            var selection ={
-                name:this.stationMarkers[i]["name"],
-                line:this.stationMarkers[i]["line"]
-            }
-          infowindow.setContent(content);
-          infowindow.open(map, marker);
-        }.bind(this)
-      }.bind(this))(marker, i));
+      console.log("Avalable Lines: ", lines)
+      if(this.arrayContains(fieldValues['subway_line'], lines)){
+        var name = station["properties"]["name"]  
+        marker = new MapApi.Marker({
+          position: new MapApi.LatLng(station["geometry"]["coordinates"][1], station["geometry"]["coordinates"][0]),
+          map: map,
+          icon:image
+        });
 
-      this.setState({stationMarkers:markers})
+        this.stationMarkers.push({
+          name:name,
+          line:station["properties"]["line"],
+          marker: marker
+        })
+
+        MapApi.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+              var content = "<div>"+
+                          "<h2>"+ this.stationMarkers[i]["name"]+"</h2>"+
+                          "<h4>"+ this.stationMarkers[i]["line"]+ "</h4></div>";
+              var selection ={
+                  name:this.stationMarkers[i]["name"],
+                  line:this.stationMarkers[i]["line"]
+              }
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+          }.bind(this)
+        }.bind(this))(marker, i));
+
+        this.setState({stationMarkers:markers})
+      }else{
+        this.stationMarkers.push({})
+      }
     }
   }
 
@@ -381,7 +406,9 @@ class App extends Component {
     var markers = this.stationMarkers
     var map = this.map
     for (var i = 0; i < this.stationMarkers.length; i++) {
-      markers[i]['marker'].setMap(null);
+      if(markers[i]['marker'] != null){
+        markers[i]['marker'].setMap(null);
+      }
     }
     this.stationMarkers = []
 
@@ -472,7 +499,7 @@ class App extends Component {
   updateLineSelection(line, color){
     var col = color
     if (color == "light_green"){
-      col = "aquamarine"
+      col = "lightgreen"
     }
     if (color == "light_gray"){
       col = "lightgray"
@@ -485,7 +512,7 @@ class App extends Component {
       baseColor:col
     })
 
-    this.updateMapWithLine(color)
+    this.updateMapWithLine(col)
   }
 
 

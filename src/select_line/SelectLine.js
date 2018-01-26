@@ -25,9 +25,11 @@ saveAndContinue(e, data, color) {
     var out ={
         subway_line: data
     }
-    this.props.updateLineSelection(data, color)
 
     this.props.saveValues(out)
+
+    this.props.updateLineSelection(data, color)
+
     this.props.nextStep()
     }
 
@@ -52,8 +54,9 @@ saveAndContinue(e, data, color) {
         display:this.state.disableDiv?'block':'none'
       };
 
-
+      var ccount = 0
       var linesDisplay = lineData.map(function(item){
+          ccount = ccount + 1
         var clas = "lines "+ item.color
         if(item.value == "T"){
             return(
@@ -64,7 +67,7 @@ saveAndContinue(e, data, color) {
             )
         }
         return(
-            <div key={item.value} ref = {item.value}  className={clas} onClick={(e) => this.saveAndContinue(e, item.value, item.color)}>
+            <div key={item.value} ref = {item.value}  style={{zIndex:ccount}}className={clas} onClick={(e) => this.saveAndContinue(e, item.value, item.color)}>
                 <h2>{item.value}</h2>
             </div>    
         )
