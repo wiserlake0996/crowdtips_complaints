@@ -9,7 +9,12 @@ import './App.css';
 
 import SelectStation from './select_station/SelectStation'
 import SelectLine from './select_line/SelectLine'
-import sleep from 'await-sleep'
+//import sleep from 'await-sleep'
+// import {sleep} from 'usleep';
+
+import sleep from 'sleep-promise';
+
+
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import OtherComplaintBox from './select_complaint/OtherComplaint';
 import FeedbackType from './feedback/FeedbackType'
@@ -262,7 +267,7 @@ class App extends Component {
 
 
   getImageForStationColor(stationColor){
-    var imageUrl = 'http://localhost:3000/station_icons/'
+    var imageUrl = process.env.PUBLIC_URL+'/station_icons/'
 
     if(stationColor == "red"){
       imageUrl = imageUrl+"red.png"
@@ -527,7 +532,7 @@ class App extends Component {
     var MapApi = this.GoogleApi
    
     var map = this.map
-    var imageUrl = 'http://localhost:3000/station_icons/'+lineColor+".png"
+    var imageUrl = process.env.PUBLIC_URL + '/station_icons/'+lineColor+".png"
 
     var image = {
       url: imageUrl,

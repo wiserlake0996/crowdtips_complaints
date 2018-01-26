@@ -16,7 +16,9 @@
     "react-dom": "^16.2.0",
     "react-scripts": "1.0.17",
     "react-share-icons": "^1.1.2",
-    "react-twitter-widgets": "^1.7.1"
+    "react-twitter-widgets": "^1.7.1",
+    "sleep-promise": "^2.0.0",
+    "usleep": "^1.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
